@@ -108,7 +108,7 @@
     s.style.borderColor = "transparent";
     stream.appendChild(s);
   }
-  function fullStream() { stream.innerHTML = ""; TOKENS.forEach(function (t) { tok(t); }); tok(THANKS, "ok"); }
+  function fullStream() { stream.innerHTML = ""; TOKENS.forEach(function (t) { tok(t); }); }
   function show(i) {
     var t = THREADS[i];
     card.innerHTML = "";
@@ -140,7 +140,7 @@
       spinning = false; btn.disabled = false;
       while (n < TOKENS.length) { tok(TOKENS[n]); n++; }
       stage(1);
-      tok(THANKS, "ok"); landed = indexAt(); burst(THANKS); startFacts(); round++; btn.hidden = false;
+      landed = indexAt(); burst(THANKS); startFacts(); round++; btn.hidden = false;
     }
     requestAnimationFrame(frame);
   }
