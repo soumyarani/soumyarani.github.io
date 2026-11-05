@@ -7,23 +7,23 @@
 
   var INK = "#0F1B2D", GOLD = "#F5B82E", GOOD = "#1DB36B", BAD = "#E5484D";
   // Hub: RL and LLMs. Outside: the topics, in a soft spectrum of light colours.
-  var RLC = "#3730A3", LLMC = "#F59E0B";
+  var RLC = "#4C4AA6", LLMC = "#F2AE57";
   // Two anchor colours in the hub (indigo RL, amber LLMs); the slices form one loop from the warm family into the cool one.
   var THREADS = [
-    { label: "POST-TRAINING", color: "#FBBF24", dark: true },
-    { label: "REASONING", color: "#F59E0B", dark: true },
-    { label: "RLVR TRACES", color: "#F97316" },
-    { label: "EVALUATION", color: "#EF4444" },
-    { label: "AGENTS", color: "#EC4899" },
-    { label: "PROMPT AUG", color: "#8B5CF6" },
-    { label: "DEEP LEARNING", color: "#4F46E5", fs: 10.5 },
-    { label: "ROBOTICS", color: "#2563EB" },
-    { label: "DECISION MAKING", color: "#0EA5E9", fs: 10 },
-    { label: "ONLINE LEARNING", color: "#14B8A6", fs: 10 }
+    { label: "POST-TRAINING", color: "#F6C65B", dark: true },
+    { label: "REASONING", color: "#F2AE57", dark: true },
+    { label: "RLVR TRACES", color: "#EE8F5A" },
+    { label: "EVALUATION", color: "#E67373" },
+    { label: "AGENTS", color: "#E082B0" },
+    { label: "PROMPT AUG", color: "#A08BE6" },
+    { label: "DEEP LEARNING", color: "#7471D8", fs: 10.5 },
+    { label: "ROBOTICS", color: "#6593E8" },
+    { label: "DECISION MAKING", color: "#62B7E4", fs: 10 },
+    { label: "ONLINE LEARNING", color: "#56B8A9", fs: 10 }
   ];
   // One message per spin. The first plays by itself when the page opens.
   var ROUNDS = [
-    { tokens: ["Thank", "you", "for", "visiting", "my", "profile,", "\n", "I", "appreciate", "you 😊"], pop: "Thank you!" },
+    { tokens: ["Thank", "you", "for", "visiting", "my", "profile,", "\n", "I", "appreciate", "you"], pop: "Thank you!" },
     { tokens: ["You", "spun", "again,", "\n", "I", "really", "appreciate", "it"], pop: "Appreciate it!" },
     { tokens: ["Still", "here?", "\n", "That", "means", "a", "lot"], pop: "You are awesome!" }
   ];
