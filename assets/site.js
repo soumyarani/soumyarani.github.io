@@ -6,20 +6,19 @@
   if (!el) return;
 
   var INK = "#0F1B2D", GOLD = "#F5B82E", GOOD = "#1DB36B", BAD = "#E5484D";
-  // The wheel is a map of the research: RL on the left half, LLMs on the right,
-  // and topics that belong to both (purple) sit on the dividing line at the top and bottom.
-  var RLC = "#2F5BEA", LLMC = "#FF5A1F", BOTH = "#7A55E0";
+  // Hub: RL and LLMs. Outside: the topics, in a soft spectrum of light colours.
+  var RLC = "#4F46E5", LLMC = "#F2665B";
   var THREADS = [
-    { label: "POST-TRAINING", split: [RLC, LLMC] },        // top, shared: half RL, half LLM
-    { label: "RLVR TRACES", split: [RLC, LLMC] },          // a combination of both
-    { label: "REASONING", color: "#F5B82E", dark: true },
-    { label: "EVALUATION", color: "#E5484D" },
-    { label: "AGENTS", color: "#F08A24" },
-    { label: "PROMPT AUG", split: [LLMC, RLC] },           // bottom, shared
-    { label: "RL FOR ROBOTICS", color: "#14A39A", fs: 10 }, // RL side
-    { label: "DECISION MAKING", color: "#1E88E5", fs: 10 },
-    { label: "ONLINE LEARNING", color: "#3949AB", fs: 10 },
-    { label: "HINGE LOSS", color: "#2F5BEA" }
+    { label: "POST-TRAINING", color: "#FFD3D1", dark: true },
+    { label: "REASONING", color: "#FFE1C2", dark: true },
+    { label: "RLVR TRACES", color: "#FFF1AE", dark: true },
+    { label: "EVALUATION", color: "#E0F4BF", dark: true },
+    { label: "AGENTS", color: "#C6EFD9", dark: true },
+    { label: "PROMPT AUG", color: "#C2ECF2", dark: true },
+    { label: "DEEP LEARNING", color: "#CADFFF", dark: true, fs: 10.5 },
+    { label: "ROBOTICS", color: "#D7D2FF", dark: true },
+    { label: "DECISION MAKING", color: "#EAD3FF", dark: true, fs: 10 },
+    { label: "ONLINE LEARNING", color: "#FFD3EA", dark: true, fs: 10 }
   ];
   // One message per spin. The first plays by itself when the page opens.
   var ROUNDS = [
@@ -78,7 +77,7 @@
   });
   // hub: RL on one half, LLMs on the other. The dividing line runs through the two shared slices.
   node("circle", { cx: 0, cy: 0, r: HUB, fill: INK }, g);
-  var dr = HUB - 9, hub = node("g", { transform: "rotate(" + (SEG / 2) + ")" }, g);
+  var dr = HUB - 9, hub = node("g", { transform: "rotate(" + (SEG * 0.75 + 4) + ")" }, g); // offset so the hub split never lines up with a slice edge
   node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 0 0," + dr + " Z", fill: RLC }, hub);
   node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 1 0," + dr + " Z", fill: LLMC }, hub);
   node("line", { x1: 0, y1: -dr, x2: 0, y2: dr, stroke: INK, "stroke-width": 3 }, hub);
