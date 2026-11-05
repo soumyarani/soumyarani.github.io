@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RLVR as Prompt Augmentation · Soumya Rani Samineni</title>
+<meta name="description" content="The optimal RLVR policy is the base policy conditioned on success, so a chain of thought is reinforced by how much it raises the probability of a correct answer, whether or not it is valid.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<nav class="top"><div class="wrap"><a class="brand" href="../index.html">← Soumya Rani Samineni</a><ul><li><a href="../index.html#featured">Research</a></li><li><a href="../index.html#papers">Papers</a></li><li><a href="../research.html">Statement</a></li><li><a href="../index.html#contact">Contact</a></li></ul></div></nav>
+
+<main class="wrap">
+  <div class="proj-hero">
+    <span class="status"><i></i>Under review · ICLR 2027</span>
+    <h1>RLVR as prompt augmentation reinforces both correct and incorrect reasoning</h1>
+    <p class="lede">An outcome reward cannot tell reasoning apart from any other scaffold that reaches the right answer. RLVR up-weights a chain of thought by how much it raises the chance of a correct answer, valid or not.</p>
+    <div class="paper-meta">
+      <a class="pill" href="local-coherence.html">Related · Local Coherence or Global Validity? (NeurIPS 2025 MATH-AI workshop)</a>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><b>π* = π<sub>base</sub> | success</b><span>the optimal RLVR policy, the base policy conditioned on a correct answer</span></div>
+    <div class="fact"><b>β rises</b><span>in every setting, P(correct | incoherent trace) goes up after RLVR</span></div>
+    <div class="fact"><b>+38.4 pp</b><span>accuracy for Qwen2.5-0.5B on GSM8K, while β also rises by 8 pp</span></div>
+  </div>
+
+  <div class="prose">
+    <h2>The claim</h2>
+    <p>For a chain of thought c on a prompt x, the optimal RLVR policy satisfies log π*(c | x) / π<sub>base</sub>(c | x) = log P(correct | x, c) / P(correct | x). The per-token value differences telescope, so a chain of thought is reinforced exactly when it raises the probability of a correct final answer relative to the prompt alone. The objective is indifferent to every other property of the chain of thought, including its validity, semantics and faithfulness. RLVR learns prompt augmentations conditioned on success.</p>
+    <h2>Two testable predictions</h2>
+    <ul>
+      <li>In a domain where traces can be verified formally (maze navigation with A* traces), RLVR should raise accuracy without raising trace validity.</li>
+      <li>In math, where validity cannot be checked at scale, RLVR should raise the rate of correct answers reached through incoherent reasoning, not only through coherent reasoning.</li>
+    </ul>
+    <p>To test the second prediction, we measure trace coherence by identifying errors in each reasoning step with a first-order-logic framework, and compute α = P(correct | coherent trace) and β = P(correct | incoherent trace) before and after RLVR on GSM8K and the GSM-Symbolic variants P1 and P2.</p>
+  </div>
+
+  <figure class="fig" style="margin:28px 0">
+    <img src="../assets/papers/pa-alpha-beta.png" alt="Dot plots from base (hollow) to RL (filled) for accuracy, alpha and beta on GSM8K across Pass@1, 4 and 16, and on GSM-Symbolic variants, for Qwen2.5-0.5B and LLaMA-3.2-1B. Beta rises in almost every setting." loading="lazy">
+    <figcaption>Figure 1. Base (hollow) to RL (filled) for accuracy, α = P(correct | coherent) and β = P(correct | incoherent), with changes in percentage points. (a) GSM8K across Pass@K. (b) GSM8K and the GSM-Symbolic variants at Pass@1. Both α and β rise in almost every setting.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>What it means</h2>
+    <p>Rising accuracy after RLVR is not evidence that the model learned to reason correctly. The objective rewards any chain of thought that makes the right answer more likely, and incoherent ones are reinforced along with coherent ones. Claims that RLVR implicitly incentivizes correct reasoning need a measure of the reasoning itself, not only of the final answer.</p>
+    <p class="note">This paper is under double-blind review at ICLR 2027. The PDF will be linked here after the review period.</p>
+  </div>
+</main>
+<footer><div class="wrap"><span>Soumya Rani Samineni · Yochan Lab, Arizona State University</span><a href="../index.html#papers">All papers</a></div></footer>
+</body>
+</html>

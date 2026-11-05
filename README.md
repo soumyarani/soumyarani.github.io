@@ -1,1 +1,9 @@
-This is the source code to Jon Barron's public academic website: https://jonbarron.info/. You are welcome to clone this code for your own personal use, just please attribute the source to the original website or to this repo. If you do clone this website, feel free to add an attribution link to your own downstream website in index.html if you want.
+# soumyarani.github.io
+
+Personal website of Soumya Rani Samineni, PhD student at Arizona State University (Yochan Lab).
+
+- `index.html` home page, `research.html` research statement
+- `papers/` and `projects/` pages for individual papers and projects
+- `assets/` styles, the wheel script and figures, `data/` resume
+
+The earlier version of this site was based on Jon Barron's academic website template (https://github.com/jonbarron/website).

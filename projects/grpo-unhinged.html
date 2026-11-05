@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GRPO-Unhinged · Soumya Rani Samineni</title>
+<meta name="description" content="With binary rewards the clipped GRPO update is a weighted hinge loss on outcome-labeled tokens, which places RLVR in classification-based policy iteration.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<nav class="top"><div class="wrap"><a class="brand" href="../index.html">← Soumya Rani Samineni</a><ul><li><a href="../index.html#featured">Research</a></li><li><a href="../index.html#papers">Papers</a></li><li><a href="../research.html">Statement</a></li><li><a href="../index.html#contact">Contact</a></li></ul></div></nav>
+
+<main class="wrap">
+  <div class="proj-hero">
+    <span class="status"><i></i>Ongoing work</span>
+    <h1>GRPO-Unhinged: The Hidden Advantage of Classification in RL Post-Training</h1>
+    <p class="lede">RL for LLMs is classification-based policy iteration. With binary rewards, the clipped GRPO update is a weighted hinge loss on outcome-labeled tokens.</p>
+    <div class="paper-meta">
+      <a class="pill" href="../papers/rl-in-name-only.html">Builds on · RL in Name Only? (NeurIPS 2025 LAW workshop)</a>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><b>Hinge loss</b><span>what the clipped GRPO update becomes with binary rewards</span></div>
+    <div class="fact"><b>4 components</b><span>class weights, margins, clipping and the score function, the only ways GRPO variants differ</span></div>
+    <div class="fact"><b>+10%</b><span>plan accuracy over GRPO on 30×30 mazes with per-class loss normalization</span></div>
+  </div>
+
+  <div class="prose">
+    <h2>The view</h2>
+    <p>Each token's log-ratio score acts as an estimate of its Q-value, the probability of success after that token. With a binary reward and no discounting, a token's advantage is how much that token raises the probability of success. The clipped GRPO update then classifies tokens against the outcome labels as a weighted hinge loss, with the score function as the decision boundary.</p>
+    <p>This places RLVR in classification-based policy iteration, and it shows that GRPO variants such as DAPO, GSPO and CISPO differ only in how they set four components: the class weights, the margins, the clipping and the score function.</p>
+  </div>
+
+  <figure class="fig" style="margin:28px 0">
+    <img src="../assets/papers/grpo-hinge.svg" alt="Hinge loss plot: correct tokens have a loss that falls to zero past the upper margin 1 plus epsilon, incorrect tokens have a loss that rises past the lower margin 1 minus epsilon." loading="lazy">
+    <figcaption>The clipped GRPO update as a weighted hinge loss. Correct tokens push their score up until the upper margin, incorrect tokens push it down past the lower margin, and the class weights set how hard each side pushes.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>Per-class loss normalization</h2>
+    <p>Existing remedies for length growth change the normalization but treat correct and incorrect responses alike. A per-class loss normalization follows from the hinge loss perspective and normalizes the loss within each class. On maze navigation, with transformers trained from scratch to produce an A* search trace and a plan, it keeps incorrect responses at their original length, where GRPO doubles them, and reaches the highest accuracy.</p>
+  </div>
+
+  <div class="tbl" style="margin:24px 0">
+    <table>
+      <caption>30×30 maze navigation after 70 steps (greedy decoding, 1,000 mazes per set, one seed). Lengths in tokens on Wilson mazes. Plan accuracy in %.</caption>
+      <thead><tr><th>Method</th><th>Correct length</th><th>Incorrect length</th><th>Wilson</th><th>Kruskal</th><th>DFS-41f</th><th>DFS-42</th></tr></thead>
+      <tbody>
+        <tr><td>Base model</td><td>1,336</td><td>4,412</td><td>49.6</td><td>49.7</td><td>65.0</td><td>30.3</td></tr>
+        <tr><td>GRPO</td><td>1,283</td><td>9,130</td><td>65.1</td><td>67.2</td><td>85.2</td><td>39.5</td></tr>
+        <tr><td>DAPO (token-level aggregation)</td><td>1,381</td><td>9,404</td><td>44.5</td><td>42.7</td><td>79.7</td><td>37.1</td></tr>
+        <tr class="ours"><td>Per-class normalization (ours)</td><td>1,405</td><td>4,199</td><td>72.9</td><td>74.4</td><td>86.7</td><td>42.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose">
+    <h2>Next directions</h2>
+    <ul>
+      <li><b>Multi-turn RL for LLM agents.</b> Extending the classification view to credit assignment across turns, using turn-level advantages to decide which turns mattered while the tokens within each turn still receive the right signal.</li>
+      <li><b>Off-policy RL post-training.</b> Deriving updates from the hinge loss perspective that remain valid when rollouts come from earlier policies, so stale or asynchronous rollouts can be reused instead of discarded.</li>
+    </ul>
+    <p class="note">This is ongoing work and the paper is in preparation. Interested in collaborating? Write to <a href="mailto:ssamine4@asu.edu">ssamine4@asu.edu</a>.</p>
+  </div>
+</main>
+<footer><div class="wrap"><span>Soumya Rani Samineni · Yochan Lab, Arizona State University</span><a href="../index.html#featured">All research</a></div></footer>
+</body>
+</html>

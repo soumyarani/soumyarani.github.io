@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RL in Name Only? · Soumya Rani Samineni</title>
+<meta name="description" content="Under the structural assumptions used in RLVR, on-policy GRPO reduces to filtered iterative supervised fine-tuning, and the growth in response length traces back to those assumptions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<nav class="top"><div class="wrap"><a class="brand" href="../index.html">← Soumya Rani Samineni</a><ul><li><a href="../index.html#featured">Research</a></li><li><a href="../index.html#papers">Papers</a></li><li><a href="../research.html">Statement</a></li><li><a href="../index.html#contact">Contact</a></li></ul></div></nav>
+
+<main class="wrap">
+  <div class="proj-hero">
+    <span class="status"><i></i>NeurIPS 2025 · LAW workshop</span>
+    <h1>RL in Name Only? Analyzing the Structural Assumptions in RL Post-Training for LLMs</h1>
+    <p class="lede">Under the assumptions that RLVR makes about the LLM as an MDP, on-policy GRPO reduces to filtered iterative supervised fine-tuning. The growth in response length traces back to the same assumptions, not to emergent reasoning.</p>
+    <p class="au" style="color:var(--muted)"><b style="color:var(--ink)">S. R. Samineni</b>, D. Kalwar, K. Valmeekam, K. Stechly, S. Kambhampati</p>
+    <div class="paper-meta">
+      <a class="pill primary" href="https://arxiv.org/abs/2505.13697">arXiv</a>
+      <a class="pill" href="../projects/grpo-unhinged.html">Follow-up · GRPO-Unhinged</a>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>Two structural assumptions</h2>
+    <p>RL with verifiable rewards treats generation as an MDP in which the state is the question plus the tokens so far, the action is the next token, and a verifier returns one binary reward at the end. Two assumptions sit inside this formulation. The next state is the current state with one token appended, with no observation from the environment, so the MDP is degenerate. And GRPO copies the group-relative advantage of a response to every one of its tokens, so no credit is assigned within a response.</p>
+  </div>
+
+  <figure class="fig" style="margin:28px 0">
+    <img src="../assets/papers/rlino-two-levels.png" alt="Turn level: prompt, response and outcome reward from the verifier. Token level: each token is appended to the state with no environment observation (Assumption 1), and the outcome reward is distributed equally to every token (Assumption 2)." loading="lazy">
+    <figcaption>The two levels of RLVR. The environment acts only at the start and end of a turn. Inside the response, each token is appended to the state (Assumption 1), and every token receives the label of its response (Assumption 2).</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>GRPO reduces to filtered iterative SFT</h2>
+    <p>With no transition, each token is a (state, action) pair, and with the outcome copied to every token, each pair carries a label. The responses sampled for a question become an outcome-labeled dataset, and the GRPO update becomes a step of supervised fine-tuning on it, filtered by the verifier. We confirm this empirically by post-training Qwen2.5, Llama 3.2 and DeepSeek 7B with GRPO and with filtered iterative SFT on GSM8K, and the two perform comparably.</p>
+  </div>
+
+  <figure class="fig" style="margin:28px 0">
+    <img src="../assets/papers/rlino-reduction.png" alt="Diagram. On the RL side, a degenerate MDP, a group-based advantage and uniform credit assignment lead to the RLVR update. On the SFT side, generating on-policy samples, filtering and labeling with the verifier, and updating iteratively lead to the FISFT update. The RLVR update reduces to the FISFT update." loading="lazy">
+    <figcaption>The RLVR update reduces to the filtered iterative SFT (FISFT) update. The verifier supplies the outcome reward to RLVR and the labels to FISFT.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>Where the length growth comes from</h2>
+    <p>Because every token of a response gets the same advantage, a token's credit is divided by the length of its response, which favors short correct responses and long incorrect ones. The growth in length often read as the model learning to think is confined to the incorrect responses, and it appears only when the model is trained on them.</p>
+  </div>
+
+  <figure class="fig pair" style="margin:28px 0">
+    <img src="../assets/papers/rlino-countdown-lengths.png" alt="Line chart of average response length over training steps on Countdown. Incorrect responses under GRPO and under FISFT trained on both classes grow from about 60 to over 800 tokens; correct responses stay near 200; FISFT trained only on correct responses stays flat near 60." loading="lazy">
+    <img src="../assets/papers/rlino-countdown-counts.png" alt="Line chart of the number of correct and incorrect responses over training steps on Countdown for GRPO and the FISFT variants." loading="lazy">
+    <figcaption>Countdown, Qwen-2.5-1.5B. Left, average response length. Right, number of correct and incorrect responses. Dashed lines are incorrect responses. Length grows only when the model trains on incorrect responses (GRPO and FISFT+−), not when it trains on correct ones alone (FISFT+).</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>What it means</h2>
+    <p>The gains of RLVR in post-training come from a supervised loss applied at each update, not from solving the credit-assignment problem that sets RL apart from supervised learning. <a href="../projects/grpo-unhinged.html">GRPO-Unhinged</a> takes this further and shows that the clipped GRPO update is a weighted hinge loss.</p>
+  </div>
+</main>
+<footer><div class="wrap"><span>Soumya Rani Samineni · Yochan Lab, Arizona State University</span><a href="../index.html#papers">All papers</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" role="img" aria-label="A landscape with a small hill and a taller mountain. Footsteps, each marked with a check, climb the small hill and stop at its top, labelled local coherence. The taller peak, labelled global validity, is never reached.">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAF1FB"/><stop offset="1" stop-color="#F8FAFD"/></linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9BC3F2"/><stop offset="1" stop-color="#5D8FD6"/></linearGradient>
+    <linearGradient id="mount" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1E3A66"/><stop offset="1" stop-color="#0F1B2D"/></linearGradient>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0F1B2D"/></marker>
+  </defs>
+  <rect width="960" height="460" fill="url(#sky)"/>
+  <!-- tall mountain: global optimum -->
+  <path d="M430,400 C520,330 590,120 700,62 C790,120 860,300 960,360 L960,460 L430,460 Z" fill="url(#mount)"/>
+  <path d="M672,82 L700,62 L728,82 L712,92 L700,84 L688,94 Z" fill="#F7F9FB"/>
+  <!-- small hill: local optimum -->
+  <path d="M0,400 C90,392 160,300 260,238 C350,290 410,380 520,420 L520,460 L0,460 Z" fill="url(#hill)"/>
+  <rect y="430" width="960" height="30" fill="#D3DBE4"/>
+  <!-- footsteps climbing the small hill -->
+  <g font-family="Hanken Grotesk, system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">
+    <g fill="#1DB36B" stroke="#fff" stroke-width="2">
+      <circle cx="60" cy="384" r="11"/><circle cx="112" cy="360" r="11"/><circle cx="158" cy="327" r="11"/><circle cx="200" cy="290" r="11"/><circle cx="238" cy="258" r="11"/>
+    </g>
+    <g fill="#fff"><text x="60" y="389">✓</text><text x="112" y="365">✓</text><text x="158" y="332">✓</text><text x="200" y="295">✓</text><text x="238" y="263">✓</text></g>
+  </g>
+  <!-- flag at local peak -->
+  <line x1="262" y1="238" x2="262" y2="182" stroke="#0F1B2D" stroke-width="3"/>
+  <path d="M262,182 L300,194 L262,206 Z" fill="#F5B82E" stroke="#0F1B2D" stroke-width="2"/>
+  <!-- star at global peak -->
+  <path d="M700,20 l7,15 16,2 -12,11 3,16 -14,-8 -14,8 3,-16 -12,-11 16,-2 z" fill="#F5B82E" stroke="#0F1B2D" stroke-width="2"/>
+  <!-- dashed gap: the step RL never takes -->
+  <path d="M300,170 C420,90 540,40 676,36" fill="none" stroke="#E5484D" stroke-width="3" stroke-dasharray="9 8" marker-end="url(#ar)"/>
+  <circle cx="488" cy="78" r="16" fill="#E5484D"/><path d="M481,71 L495,85 M495,71 L481,85" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+  <g font-family="Hanken Grotesk, system-ui, sans-serif" fill="#0F1B2D">
+    <text x="26" y="196" font-size="19" font-weight="700">Local coherence</text>
+    <text x="26" y="220" font-size="15" fill="#33465E">every step checks out,</text>
+    <text x="26" y="240" font-size="15" fill="#33465E">the trace looks coherent</text>
+    <text x="740" y="40" font-size="19" font-weight="700" fill="#0F1B2D">Global validity</text>
+    <text x="740" y="62" font-size="15" fill="#33465E">the valid solution</text>
+    <text x="400" y="142" font-size="15" font-weight="600" fill="#B4262B" text-anchor="middle">the climb an outcome</text><text x="400" y="161" font-size="15" font-weight="600" fill="#B4262B" text-anchor="middle">reward does not ask for</text>
+  </g>
+  <text x="480" y="450" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" fill="#4F6073" text-anchor="middle" letter-spacing="1">LOCAL COHERENCE ≠ GLOBAL VALIDITY</text>
+</svg>

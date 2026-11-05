@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Research Statement · Soumya Rani Samineni</title>
+<meta name="description" content="Research statement of Soumya Rani Samineni, PhD student at Arizona State University working on RL post-training, reasoning and the evaluation of LLMs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<nav class="top"><div class="wrap"><a class="brand" href="index.html">← Soumya Rani Samineni</a><ul><li><a href="index.html#featured">Research</a></li><li><a href="index.html#papers">Papers</a></li><li><a href="index.html#path">Path</a></li><li><a href="index.html#contact">Contact</a></li></ul></div></nav>
+
+<main class="wrap">
+  <div class="proj-hero">
+    <span class="status"><i></i>Research statement · November 2026</span>
+    <h1>What RL post-training actually changes in a model</h1>
+    <p class="lede">I am a third-year PhD student in Computer Science and Engineering at Arizona State University, advised by Prof. Subbarao Kambhampati in the Yochan Lab. I research reinforcement learning post-training, reasoning and the evaluation of LLMs. I take a critical look at RL post-training and enjoy skeptical evaluation work that tests LLMs to their limits.</p>
+    <div class="paper-meta">
+      <a class="pill primary" href="data/Soumya_CV.pdf">Resume (PDF)</a>
+      <a class="pill" href="mailto:ssamine4@asu.edu">ssamine4@asu.edu</a>
+    </div>
+  </div>
+
+  <div class="statement">
+    <h2>RLVR as classification-based policy iteration</h2>
+    <p>My findings show that RLVR acts as a classification-based policy iteration method for learning to search. In my ongoing work, <a href="projects/grpo-unhinged.html">GRPO-Unhinged</a>, I show that with binary rewards the clipped GRPO update is a weighted hinge loss on outcome-labeled tokens. Each token's log-ratio score acts as an estimate of its Q-value, the probability of success after that token, and GRPO variants such as DAPO, GSPO and CISPO differ only in how they set four components, the class weights, the margins, the clipping and the score function. A per-class loss normalization that follows from the hinge loss perspective raised plan accuracy by 10% over GRPO on 30×30 maze navigation and kept incorrect responses at their original length, where GRPO doubled them.</p>
+    <p>This builds on <a href="papers/rl-in-name-only.html">RL in Name Only?</a> (NeurIPS 2025 LAW workshop), where I showed that under the LLM-as-MDP assumptions used in RLVR, on-policy GRPO reduces to filtered iterative SFT, confirmed by post-training Qwen2.5, Llama 3.2 and DeepSeek 7B on GSM8K, and traced the growth in response length to these structural assumptions rather than to emergent reasoning.</p>
+
+    <h2>Skeptical evaluation of reasoning</h2>
+    <p>In <a href="papers/prompt-augmentation.html">RLVR as Prompt Augmentation</a> (under review at ICLR 2027), I derive the optimal policy of the RLVR objective as the base policy conditioned on success, and prove that a chain of thought is up-weighted only by how much it raises the solve probability, regardless of its validity or coherence. On math reasoning benchmarks, GRPO raises accuracy while the rate of correct answers reached through incoherent reasoning also rises in every setting, contradicting the claim that RLVR implicitly incentivizes correct reasoning.</p>
+    <p>In <a href="papers/local-coherence.html">Local Coherence or Global Validity?</a> (NeurIPS 2025 MATH-AI workshop), I built an LLM-as-judge pipeline that translates reasoning traces into first-order logic and tags errors, validated against human annotations, and showed that RLVR improves local step coherence without making solutions valid. I am also a co-author on an ICML 2026 position paper arguing against anthropomorphizing intermediate tokens as reasoning traces.</p>
+
+    <h2>From prototypes to working systems</h2>
+    <p>Before the PhD I spent more than two years turning RL into working systems. At Quantiphi I built an RL scheduler for flexible job-shop manufacturing with graph attention networks, and I am a co-inventor on a US patent application. At Microsoft Research India I built the RL framework for a renewable-energy market, where the agent handled carbon arbitrage and profit maximization. My M.Tech thesis at the Indian Institute of Science applied RL to robotics, and the resulting approach, which combines model-based lookahead with model-free RL, improved sample efficiency by 30% in simulation and doubled it on a real robot arm and quadruped (ICRA 2022). Before moving into computer science, I earned a B.Tech in Civil Engineering from NIT Warangal and worked as an Assistant Executive Engineer in the Roads and Buildings Department of the Government of Telangana.</p>
+
+    <h2>What I want to work on next</h2>
+    <ul style="margin:0;padding-left:20px;display:grid;gap:8px">
+      <li><b>Multi-turn RL for LLM agents</b>, where credit has to be assigned across turns as well as tokens, while the tokens within each turn still receive the right signal.</li>
+      <li><b>Off-policy RL post-training</b>, with updates derived from the hinge loss perspective that remain valid when rollouts come from earlier policies, so stale or asynchronous rollouts can be reused instead of discarded.</li>
+      <li><b>Evaluation of reasoning in non-ergodic worlds</b>, where averages over many runs differ from what one agent experiences along a single trajectory.</li>
+    </ul>
+    <p>I am looking for a research internship for summer 2027, and I would welcome the chance to collaborate on these questions. Write to <a href="mailto:ssamine4@asu.edu">ssamine4@asu.edu</a>.</p>
+  </div>
+</main>
+<footer><div class="wrap"><span>Soumya Rani Samineni · Yochan Lab, Arizona State University</span><a href="index.html">Home</a></div></footer>
+</body>
+</html>

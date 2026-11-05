@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Local Coherence or Global Validity? · Soumya Rani Samineni</title>
+<meta name="description" content="RL post-training improves the local coherence of reasoning traces without necessarily making them valid. A first-order-logic measure of trace coherence on GSM8K.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+.poster { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface); margin: 28px 0; }
+.poster .band { background: #0F1B2D; color: #F7F9FB; padding: 26px 28px; display: grid; gap: 8px; }
+.poster .band h2 { color: #F7F9FB; font-size: clamp(24px, 3vw, 34px); }
+.poster .band p { color: #B8C6D6; font-size: 15px; }
+.poster .band .ven { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #F5B82E; }
+.poster .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.poster .col { padding: 22px 24px; display: grid; gap: 10px; align-content: start; border-top: 1px solid var(--line); }
+.poster .col + .col { border-left: 1px solid var(--line); }
+@media (max-width: 760px) { .poster .col + .col { border-left: 0; } }
+.poster .col h3 { font-size: 17px; }
+.poster .col p, .poster .col li { color: var(--muted); font-size: 15px; }
+.poster .col ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.poster .tag { justify-self: start; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; color: #fff; }
+.poster .big { font-family: var(--font-display); font-size: 40px; font-weight: 800; letter-spacing: -.02em; line-height: 1; color: var(--ink); }
+.patterns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; font-family: var(--font-mono); font-size: 12.5px; }
+.patterns span { border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; color: var(--ink); background: var(--bg); }
+.patterns b { color: var(--accent); }
+.poster .take { background: #F5B82E; color: #0F1B2D; padding: 16px 24px; font-weight: 600; font-size: 16px; }
+</style>
+</head>
+<body>
+<nav class="top"><div class="wrap"><a class="brand" href="../index.html">← Soumya Rani Samineni</a><ul><li><a href="../index.html#featured">Research</a></li><li><a href="../index.html#papers">Papers</a></li><li><a href="../research.html">Statement</a></li><li><a href="../index.html#contact">Contact</a></li></ul></div></nav>
+
+<main class="wrap">
+  <div class="proj-hero">
+    <span class="status"><i></i>NeurIPS 2025 · MATH-AI workshop</span>
+    <h1>Local Coherence or Global Validity? Investigating RLVR Traces in Math Domains</h1>
+    <p class="au" style="color:var(--muted)"><b style="color:var(--ink)">S. R. Samineni</b>, D. Kalwar, V. Gangal, S. Bhambri, S. Kambhampati</p>
+    <div class="paper-meta">
+      <a class="pill primary" href="https://arxiv.org/abs/2510.18176">arXiv</a>
+      <a class="pill" href="prompt-augmentation.html">Follow-up · RLVR as Prompt Augmentation</a>
+    </div>
+  </div>
+
+  <figure class="fig" style="margin:8px 0 28px">
+    <img src="../assets/papers/lcgv-local-peak.svg" alt="Footsteps, each marked with a check, climb a small hill to local coherence, while the taller peak, global validity, is never reached.">
+    <figcaption>The analogy. Every step of the trace checks out, so the climb reaches local coherence. Global validity, the valid solution, is a different and higher peak, and an outcome reward does not ask the model to climb it.</figcaption>
+  </figure>
+
+  <section class="poster" aria-label="Poster summary" style="padding:0;border-top:1px solid var(--line)">
+    <div class="band">
+      <span class="ven">Poster · NeurIPS 2025 Workshop on Mathematical Reasoning and AI</span>
+      <h2>RLVR makes reasoning traces locally coherent, not necessarily valid</h2>
+      <p>RLVR rewards only the final answer, yet claims are made about better reasoning traces. We measure what happens to the intermediate tokens that are never directly rewarded.</p>
+    </div>
+    <div class="cols">
+      <div class="col">
+        <span class="tag" style="background:#FF5A1F">Question</span>
+        <h3>Does RL post-training improve the reasoning, or only the answer?</h3>
+        <p>GRPO on Qwen-2.5-0.5B with GSM8K. Each test problem falls into one of four patterns by whether the base model (first digit) and the RL model (second digit) answer it correctly.</p>
+        <div class="patterns"><span><b>00</b> both wrong</span><span><b>01</b> only RL right</span><span><b>10</b> only base right</span><span><b>11</b> both right</span></div>
+      </div>
+      <div class="col">
+        <span class="tag" style="background:#2F5BEA">Method</span>
+        <h3>Trace coherence, measured with first-order logic</h3>
+        <ul>
+          <li>Translate each trace into a first-order-logic representation and tag errors with a taxonomy (false premise, false rule, calculator error, format error).</li>
+          <li>A trace is coherent if it has no errors. Validity, logical soundness, is the stronger property.</li>
+          <li>Pass@K trace coherence, checked against human annotations.</li>
+        </ul>
+      </div>
+      <div class="col">
+        <span class="tag" style="background:#14A39A">Finding</span>
+        <span class="big">0% → ~85%</span>
+        <p>trace coherence on problems only the RL model solves (pattern 01), across Pass@K.</p>
+        <span class="big">up to 96%</span>
+        <p>trace coherence for problems both models solve (pattern 11) after RL.</p>
+      </div>
+    </div>
+    <div class="take">RL improves local coherence without necessarily producing valid or correct solutions. Claims of improved reasoning via RL need to measure validity, not coherence.</div>
+  </section>
+
+  <figure class="fig pair" style="margin:28px 0">
+    <img src="../assets/papers/lcgv-patterns-00-01.png" alt="Confusion matrices of trace validity against answer correctness for patterns 00 and 01, base model and RL model, at Pass@1." loading="lazy">
+    <img src="../assets/papers/lcgv-patterns-10-11.png" alt="Confusion matrices of trace validity against answer correctness for patterns 10 and 11, base model and RL model, at Pass@1." loading="lazy">
+    <figcaption>Confusion matrices for patterns 00 and 01 (left) and 10 and 11 (right) at Pass@1, before (step 0) and after (step 100) RL.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>Why it matters</h2>
+    <p>Improved local coherence in reasoning steps does not guarantee a valid proof or a correct answer. A model can learn to write steps that look consistent while the solution as a whole is still wrong. <a href="prompt-augmentation.html">RLVR as Prompt Augmentation</a> follows up with a theory of why the objective behaves this way.</p>
+  </div>
+</main>
+<footer><div class="wrap"><span>Soumya Rani Samineni · Yochan Lab, Arizona State University</span><a href="../index.html#papers">All papers</a></div></footer>
+</body>
+</html>

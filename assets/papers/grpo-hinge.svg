@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" role="img" aria-label="Plot of loss against the token score. Correct tokens have a hinge loss that falls to zero once the score passes the upper margin 1 plus epsilon. Incorrect tokens have a hinge loss that rises once the score passes the lower margin 1 minus epsilon. The GRPO update is this weighted hinge loss.">
+  <rect width="960" height="460" fill="#F8FAFD"/>
+  <g font-family="Hanken Grotesk, system-ui, sans-serif">
+    <text x="40" y="44" font-size="22" font-weight="800" fill="#0F1B2D">The clipped GRPO update is a weighted hinge loss</text>
+    <text x="40" y="70" font-size="15" fill="#4F6073">Score = the token's log-ratio, an estimate of its Q-value · label = the outcome of its response</text>
+  </g>
+  <!-- axes -->
+  <g stroke="#0F1B2D" stroke-width="2"><line x1="90" y1="390" x2="900" y2="390"/><line x1="90" y1="390" x2="90" y2="100"/></g>
+  <g font-family="Hanken Grotesk, system-ui, sans-serif" font-size="14" fill="#4F6073">
+    <text x="900" y="416" text-anchor="end">score (importance ratio)</text>
+    <text x="70" y="104" text-anchor="end">loss</text>
+  </g>
+  <!-- margins -->
+  <g stroke="#94A5B8" stroke-width="1.5" stroke-dasharray="6 6"><line x1="400" y1="110" x2="400" y2="390"/><line x1="580" y1="110" x2="580" y2="390"/></g>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" fill="#4F6073" text-anchor="middle">
+    <text x="400" y="412">1 − ε</text><text x="580" y="412">1 + ε</text><text x="490" y="132">margin</text>
+  </g>
+  <path d="M410,138 L570,138" stroke="#94A5B8" stroke-width="1.5"/>
+  <!-- correct: falls to zero after 1+eps -->
+  <path d="M120,150 L580,384 L880,384" fill="none" stroke="#1DB36B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- incorrect: rises after 1-eps -->
+  <path d="M110,380 L400,380 L860,170" fill="none" stroke="#E5484D" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- labels -->
+  <g font-family="Hanken Grotesk, system-ui, sans-serif" font-weight="700" font-size="16">
+    <rect x="130" y="196" width="196" height="54" rx="8" fill="#fff" stroke="#1DB36B" stroke-width="2"/>
+    <text x="146" y="219" fill="#137A49">✓ correct tokens</text>
+    <text x="146" y="240" font-weight="500" font-size="13.5" fill="#4F6073">push the score up, weight w₊</text>
+    <rect x="660" y="226" width="214" height="54" rx="8" fill="#fff" stroke="#E5484D" stroke-width="2"/>
+    <text x="676" y="249" fill="#B4262B">✗ incorrect tokens</text>
+    <text x="676" y="270" font-weight="500" font-size="13.5" fill="#4F6073">push the score down, weight w₋</text>
+  </g>
+  <text x="480" y="446" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13" fill="#4F6073" text-anchor="middle" letter-spacing="1">GRPO VARIANTS DIFFER ONLY IN CLASS WEIGHTS · MARGINS · CLIPPING · SCORE</text>
+</svg>
