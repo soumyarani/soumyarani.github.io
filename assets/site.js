@@ -180,7 +180,15 @@
     card.innerHTML = '<div class="tagline eyebrow">✨ For you</div><h3>I have a surprise for you, for visiting.</h3><p>Watch the wheel…</p>';
   }
 
-  apply(); intro(); stream.innerHTML = "";
+  // Size the surprise box to its longest surprise, so the box never grows or shrinks between spins.
+  function sizeCard() {
+    card.style.minHeight = ""; var keep = card.innerHTML, max = 0, saved = factIdx;
+    for (var i = 0; i < FACTS.length; i++) { factIdx = i; renderFact(); max = Math.max(max, card.offsetHeight); }
+    factIdx = saved; card.innerHTML = keep; card.style.minHeight = max + "px";
+  }
+  apply(); sizeCard(); intro(); stream.innerHTML = "";
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { var k = card.innerHTML; sizeCard(); card.innerHTML = k; });
+  window.addEventListener("resize", function () { var k = card.innerHTML; sizeCard(); card.innerHTML = k; });
   btn.addEventListener("click", spin);
   el.addEventListener("click", spin);
   btn.hidden = true;
