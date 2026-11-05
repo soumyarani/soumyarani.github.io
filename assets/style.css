@@ -263,3 +263,4 @@ section { padding-block: 48px; }
 .profile + .seeking { margin-top: 22px; }
 .groups > div { min-height: 26px; }
 .groups .fa-youtube { color: #FF0000; }
+.groups svg.fa-kaggle { width: 0.7em; height: 0.95em; }
