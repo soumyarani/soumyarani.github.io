@@ -306,3 +306,4 @@ section { padding-block: 48px; }
 .reward p { font-size: 13.5px; line-height: 1.45; }
 .reward { align-content: start; }
 .reward .tagline { margin-bottom: 2px; }
+.reward h3, .reward p, .stream { text-wrap: pretty; }

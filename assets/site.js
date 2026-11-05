@@ -30,15 +30,15 @@
   var round = 0, TOKENS = ROUNDS[0].tokens, FINAL = "✨", THANKS = ROUNDS[0].pop;
   // Surprise facts, all from the November 2026 resume. They play in a loop after the wheel stops.
   var FACTS = [
-    { k: "From Civil Engineering to RL Research", t: "Before computer science, I was an Assistant Executive Engineer in the Roads and Buildings Department of the Government of Telangana." },
-    { k: "Rank 136", t: "I ranked 136 out of 107,893 in GATE Computer Science and Engineering 2018." },
-    { k: "Real robots", t: "My M.Tech method doubled sample efficiency on a real robot arm and quadruped (ICRA 2022)." },
-    { k: "Microseconds", t: "I wrote a quadruped controller in lightweight C++ that runs in microseconds, down from the milliseconds in the source paper." },
-    { k: "A patent", t: "I am a co-inventor on a US patent application for scheduling manufacturing jobs." },
-    { k: "Energy markets", t: "At Microsoft Research India I built the RL framework for a renewable-energy market, with carbon arbitrage and profit maximization." },
-    { k: "Rollouts", t: "I worked with Prof. Dimitri Bertsekas on rollouts at every decoding step of an LLM, tested on Game of 24." },
-    { k: "The hinge", t: "With binary rewards, the clipped GRPO update is a weighted hinge loss. That is the idea behind GRPO-Unhinged." },
-    { k: "Right answer, wrong reasons", t: "After RLVR, correct answers reached through incoherent reasoning go up in every setting we tested." }
+    { k: "From Civil Engineering to RL Research", t: "Before computer science, I was an Assistant Executive Engineer in the Roads\u00a0and\u00a0Buildings\u00a0Department of the Government\u00a0of\u00a0Telangana." },
+    { k: "Rank 136", t: "I ranked 136 out of 107,893 in GATE\u00a0Computer\u00a0Science\u00a0and\u00a0Engineering\u00a02018." },
+    { k: "Real robots", t: "My M.Tech method doubled sample efficiency on a real robot\u00a0arm\u00a0and\u00a0quadruped (ICRA\u00a02022)." },
+    { k: "Microseconds", t: "I wrote a quadruped controller in lightweight C++ that runs in microseconds, down from the milliseconds in the source\u00a0paper." },
+    { k: "A patent", t: "I am a co-inventor on a US\u00a0patent\u00a0application for scheduling manufacturing jobs." },
+    { k: "Energy markets", t: "At Microsoft Research India I built the RL framework for a renewable-energy\u00a0market, with carbon arbitrage and profit\u00a0maximization." },
+    { k: "Rollouts", t: "I worked with Prof.\u00a0Dimitri\u00a0Bertsekas on rollouts at every decoding step of an LLM, tested on Game\u00a0of\u00a024." },
+    { k: "The hinge", t: "With binary rewards, the clipped GRPO update is a weighted\u00a0hinge\u00a0loss. That is the idea behind GRPO-Unhinged." },
+    { k: "Right answer, wrong reasons", t: "After RLVR, correct answers reached through incoherent reasoning go up in every\u00a0setting\u00a0we\u00a0tested." }
   ];
   var factTimer = null, factIdx = 0, landed = null;
   var N = THREADS.length, SEG = 360 / N, R = 200, HUB = 66, NS = "http://www.w3.org/2000/svg";
