@@ -108,7 +108,7 @@
     s.style.borderColor = "transparent";
     stream.appendChild(s);
   }
-  function fullStream() { stream.innerHTML = ""; TOKENS.forEach(function (t) { tok(t); }); tok(FINAL, "gold"); tok(THANKS, "ok"); }
+  function fullStream() { stream.innerHTML = ""; TOKENS.forEach(function (t) { tok(t); }); tok(THANKS, "ok"); }
   function show(i) {
     var t = THREADS[i];
     card.innerHTML = "";
@@ -139,7 +139,7 @@
       if (w > 22) { requestAnimationFrame(frame); return; } // stop before the slow crawl at the end
       spinning = false; btn.disabled = false;
       while (n < TOKENS.length) { tok(TOKENS[n]); n++; }
-      tok(FINAL, "gold"); stage(1);
+      stage(1);
       tok(THANKS, "ok"); landed = indexAt(); burst(THANKS); startFacts(); round++; btn.hidden = false;
     }
     requestAnimationFrame(frame);
@@ -147,9 +147,9 @@
 
   function burst(msg) {
     var b = document.createElement("div"); b.className = "burst"; b.setAttribute("aria-hidden", "true");
-    for (var i = 0; i < 16; i++) {
+    for (var i = 0; i < 10; i++) {
       var sp = document.createElement("span"); sp.textContent = i % 3 ? "✨" : "★";
-      var a = (i / 16) * 2 * Math.PI + Math.random() * 0.3, d = 120 + Math.random() * 110;
+      var a = (i / 10) * 2 * Math.PI + Math.random() * 0.3, d = 80 + Math.random() * 60;
       sp.style.setProperty("--dx", (Math.cos(a) * d).toFixed(0) + "px");
       sp.style.setProperty("--dy", (Math.sin(a) * d).toFixed(0) + "px");
       sp.style.animationDelay = (Math.random() * 0.15).toFixed(2) + "s";
@@ -158,7 +158,7 @@
     }
     var t = document.createElement("strong"); t.className = "burst-thanks"; t.textContent = msg || "Thank you!"; b.appendChild(t);
     box.appendChild(b);
-    setTimeout(function () { b.remove(); }, 2600);
+    setTimeout(function () { b.remove(); }, 2200);
   }
   function renderFact() {
     var f = FACTS[factIdx % FACTS.length];

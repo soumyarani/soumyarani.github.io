@@ -280,3 +280,21 @@ section { padding-block: 48px; }
 .stream, .stream:empty { display: flex; min-height: 78px; align-content: flex-start; }
 .spin[hidden] { display: inline-block !important; visibility: hidden; }
 .reward { min-height: 150px; }
+/* Smaller wheel, and a calm thank-you */
+#wheel { width: min(100%, 330px); }
+.wheelbox { gap: 12px; }
+.stream, .stream:empty { min-height: 64px; max-width: 380px; }
+.tok { font-size: 12px; padding: 5px 8px; }
+.reward { max-width: 380px; min-height: 128px; padding: 14px 16px; }
+.burst span { font-size: 16px; opacity: 0; animation: drift 1.8s ease-out forwards; }
+@keyframes drift { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.6); } 25% { opacity: .9; } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); } }
+.burst-thanks { font-family: var(--font-body); font-weight: 600; font-size: 26px; color: #0F1B2D; background: rgba(255,255,255,.94); border: 0; border-radius: 999px; padding: 8px 22px; box-shadow: 0 8px 30px rgba(15,27,45,.18); animation: soft 2.1s ease forwards; }
+@keyframes soft { 0% { opacity: 0; transform: translate(-50%, -40%); } 20% { opacity: 1; transform: translate(-50%, -50%); } 78% { opacity: 1; transform: translate(-50%, -50%); } 100% { opacity: 0; transform: translate(-50%, -56%); } }
+#wheel { width: min(100%, 285px); }
+.wheelbox { gap: 10px; }
+.spin { padding: 8px 20px; font-size: 14.5px; }
+.reward { min-height: 112px; padding: 12px 16px; gap: 4px; }
+.reward h3 { font-size: 16px; }
+.reward p { font-size: 14px; }
+.reward { min-height: 100px; }
+.stream, .stream:empty { min-height: 58px; }
