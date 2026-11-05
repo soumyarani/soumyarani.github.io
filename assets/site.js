@@ -23,9 +23,9 @@
   ];
   // One message per spin. The first plays by itself when the page opens.
   var ROUNDS = [
-    { tokens: ["Thank", "you", "for", "visiting", "my", "profile,", "I", "appreciate", "you"], pop: "Thank you!" },
-    { tokens: ["You", "spun", "again,", "I", "really", "appreciate", "it"], pop: "Appreciate it!" },
-    { tokens: ["Still", "here?", "That", "means", "a", "lot"], pop: "You are awesome!" }
+    { tokens: ["Thank", "you", "for", "visiting", "my", "profile,", "\n", "I", "appreciate", "you"], pop: "Thank you!" },
+    { tokens: ["You", "spun", "again,", "\n", "I", "really", "appreciate", "it"], pop: "Appreciate it!" },
+    { tokens: ["Still", "here?", "\n", "That", "means", "a", "lot"], pop: "You are awesome!" }
   ];
   var round = 0, TOKENS = ROUNDS[0].tokens, FINAL = "✨", THANKS = ROUNDS[0].pop;
   // Surprise facts, all from the November 2026 resume. They play in a loop after the wheel stops.
@@ -99,9 +99,10 @@
   function indexAt() { var phi = (((-theta) % 360) + 360) % 360; return Math.floor(phi / SEG) % N; }
   function stage(n) { for (var i = 0; i < stages.length; i++) stages[i].classList.toggle("on", i === n); }
   function tok(text, cls) {
+    if (text === "\n") { var br = document.createElement("i"); br.className = "tok-br"; stream.appendChild(br); return; }
     var s = document.createElement("span"); s.className = "tok" + (cls ? " " + cls : ""); s.textContent = text;
     // colour each word with the wheel's palette, in order
-    var k = stream.children.length, t = THREADS[k % THREADS.length];
+    var k = stream.querySelectorAll(".tok").length, t = THREADS[k % THREADS.length];
     if (cls === "gold") { s.style.background = LLMC; s.style.color = INK; }
     else if (cls === "ok") { s.style.background = RLC; s.style.color = "#fff"; }
     else { s.style.background = t.color; s.style.color = t.dark ? INK : "#fff"; }
