@@ -7,7 +7,7 @@
 
   var INK = "#0F1B2D", GOLD = "#F5B82E", GOOD = "#1DB36B", BAD = "#E5484D";
   // Hub: RL and LLMs. Outside: the topics, in a soft spectrum of light colours.
-  var RLC = "#4F46E5", LLMC = "#F2665B";
+  var RLC = "#FFFFFF", LLMC = "#0F1B2D";
   var THREADS = [
     { label: "POST-TRAINING", color: "#FF3B30" },
     { label: "REASONING", color: "#FF9500" },
@@ -80,8 +80,8 @@
   var dr = HUB - 9, hub = node("g", { transform: "rotate(" + (SEG * 0.75 + 4) + ")" }, g); // offset so the hub split never lines up with a slice edge
   node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 0 0," + dr + " Z", fill: RLC }, hub);
   node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 1 0," + dr + " Z", fill: LLMC }, hub);
-  node("line", { x1: 0, y1: -dr, x2: 0, y2: dr, stroke: INK, "stroke-width": 3 }, hub);
-  var t1 = node("text", { x: -dr / 2 + 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 20, "font-weight": 800, style: "fill:#fff" }, hub); t1.textContent = "RL";
+  node("circle", { cx: 0, cy: 0, r: dr, fill: "none", stroke: "#FFFFFF", "stroke-width": 3 }, hub);
+  var t1 = node("text", { x: -dr / 2 + 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 20, "font-weight": 800, style: "fill:#0F1B2D" }, hub); t1.textContent = "RL";
   var t2 = node("text", { x: dr / 2 - 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 15, "font-weight": 800, style: "fill:#fff" }, hub); t2.textContent = "LLMs";
   // pointer (fixed)
   node("path", { d: "M-17,-270 L17,-270 L17,-244 L0,-224 L-17,-244 Z", fill: GOLD, stroke: INK, "stroke-width": 4, "stroke-linejoin": "round" }, el);
