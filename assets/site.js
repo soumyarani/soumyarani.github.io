@@ -165,15 +165,3 @@
   setTimeout(spin, 1200); // the first spin plays by itself when the page opens
 })();
 
-/* Live citation counts from Semantic Scholar (falls back to the numbers in the page if the request fails). */
-(function () {
-  var el = document.getElementById("cites");
-  if (!el || !window.fetch) return;
-  fetch("https://api.semanticscholar.org/graph/v1/author/2134899829?fields=citationCount,hIndex,paperCount")
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (a) {
-      if (!a || typeof a.citationCount !== "number") return;
-      el.textContent = a.citationCount.toLocaleString() + " citations · h-index " + a.hIndex + " · " + a.paperCount + " papers · Semantic Scholar, live";
-    })
-    .catch(function () {});
-})();
