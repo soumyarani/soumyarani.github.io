@@ -264,3 +264,13 @@ section { padding-block: 48px; }
 .groups > div { min-height: 26px; }
 .groups .fa-youtube { color: #FF0000; }
 .groups svg.fa-kaggle { width: 0.7em; height: 0.95em; }
+/* One card per row, with space between */
+.featured { grid-template-columns: minmax(0, 1fr) !important; gap: 28px; }
+.featured .project { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); grid-template-areas: "img chip" "img h" "img p" "img go"; column-gap: 28px; align-content: center; padding: 24px; }
+.featured .project img { grid-area: img; align-self: center; height: 200px; }
+.featured .project .chip { grid-area: chip; }
+.featured .project h3 { grid-area: h; }
+.featured .project p { grid-area: p; }
+.featured .project .go { grid-area: go; }
+@media (max-width: 760px) { .featured .project { grid-template-columns: minmax(0, 1fr); grid-template-areas: "chip" "img" "h" "p" "go"; } }
+.projects.proj-1-2 { grid-template-columns: minmax(0, 1fr) !important; gap: 20px; }
