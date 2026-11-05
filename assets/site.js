@@ -99,7 +99,14 @@
   function indexAt() { var phi = (((-theta) % 360) + 360) % 360; return Math.floor(phi / SEG) % N; }
   function stage(n) { for (var i = 0; i < stages.length; i++) stages[i].classList.toggle("on", i === n); }
   function tok(text, cls) {
-    var s = document.createElement("span"); s.className = "tok" + (cls ? " " + cls : ""); s.textContent = text; stream.appendChild(s);
+    var s = document.createElement("span"); s.className = "tok" + (cls ? " " + cls : ""); s.textContent = text;
+    // colour each word with the wheel's palette, in order
+    var k = stream.children.length, t = THREADS[k % THREADS.length];
+    if (cls === "gold") { s.style.background = LLMC; s.style.color = INK; }
+    else if (cls === "ok") { s.style.background = RLC; s.style.color = "#fff"; }
+    else { s.style.background = t.color; s.style.color = t.dark ? INK : "#fff"; }
+    s.style.borderColor = "transparent";
+    stream.appendChild(s);
   }
   function fullStream() { stream.innerHTML = ""; TOKENS.forEach(function (t) { tok(t); }); tok(FINAL, "gold"); tok(THANKS, "ok"); }
   function show(i) {
