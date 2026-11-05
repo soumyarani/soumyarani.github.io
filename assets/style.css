@@ -261,3 +261,4 @@ section { padding-block: 48px; }
 .groups a.mail { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .groups .fa-envelope { color: var(--accent) !important; }
 .profile + .seeking { margin-top: 22px; }
+.groups > div { min-height: 26px; }
