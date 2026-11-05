@@ -23,7 +23,7 @@
   var round = 0, TOKENS = ROUNDS[0].tokens, FINAL = "✨", THANKS = ROUNDS[0].pop;
   // Surprise facts, all from the November 2026 resume. They play in a loop after the wheel stops.
   var FACTS = [
-    { k: "From Civil Engineering to RL", t: "Before computer science, I was an Assistant Executive Engineer in the Roads and Buildings Department of the Government of Telangana." },
+    { k: "From Civil Engineering to RL Research", t: "Before computer science, I was an Assistant Executive Engineer in the Roads and Buildings Department of the Government of Telangana." },
     { k: "Rank 136", t: "I ranked 136 out of 107,893 in GATE Computer Science and Engineering 2018." },
     { k: "Real robots", t: "My M.Tech method doubled sample efficiency on a real robot arm and quadruped (ICRA 2022)." },
     { k: "Microseconds", t: "I wrote a quadruped controller in lightweight C++ that runs in microseconds, down from the milliseconds in the source paper." },
