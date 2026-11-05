@@ -275,3 +275,8 @@ section { padding-block: 48px; }
 @media (max-width: 760px) { .featured .project { grid-template-columns: minmax(0, 1fr); grid-template-areas: "chip" "img" "h" "p" "go"; } }
 .projects.proj-1-2 { grid-template-columns: minmax(0, 1fr) !important; gap: 20px; }
 .hero h1 { font-size: clamp(26px, 2.75vw, 35px); }
+/* Keep the page still while the wheel plays: reserve space for the words, button and surprise card */
+.hero { align-items: start; }
+.stream, .stream:empty { display: flex; min-height: 78px; align-content: flex-start; }
+.spin[hidden] { display: inline-block !important; visibility: hidden; }
+.reward { min-height: 150px; }
