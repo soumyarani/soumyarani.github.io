@@ -243,3 +243,17 @@ section { padding-block: 48px; }
 .projects.proj-1-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .projects.proj-1-2 > :first-child { grid-column: 1 / -1; }
 @media (max-width: 700px) { .projects.proj-1-2 { grid-template-columns: minmax(0, 1fr); } }
+
+/* Hero: internship line and profile card */
+.seeking { margin-top: 14px; color: #C62828; font-weight: 600; font-size: 16.5px; }
+.profile { display: flex; gap: 18px; align-items: center; margin-top: 28px; }
+.profile img { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; box-shadow: 0 0 0 1px var(--line); flex: none; }
+.groups { margin: 0; display: grid; gap: 7px; }
+.groups > div { display: grid; grid-template-columns: 138px minmax(0, 1fr); align-items: center; gap: 8px; }
+.groups dt { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.groups dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 15px; }
+.groups a { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 7px; }
+.groups a:hover { color: var(--accent); }
+.groups svg, .groups i { width: 1.15em; height: 1.15em; font-size: 18px; }
+.groups .fa-linkedin { color: #0A66C2; } .groups .fa-google-scholar { color: #4285F4; } .groups .fa-envelope { color: #EA4335; }
+@media (max-width: 560px) { .profile { flex-direction: column; align-items: flex-start; } .groups > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
