@@ -262,3 +262,4 @@ section { padding-block: 48px; }
 .groups .fa-envelope { color: var(--accent) !important; }
 .profile + .seeking { margin-top: 22px; }
 .groups > div { min-height: 26px; }
+.groups .fa-youtube { color: #FF0000; }
