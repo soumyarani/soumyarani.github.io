@@ -9,16 +9,16 @@
   // Hub: RL and LLMs. Outside: the topics, in a soft spectrum of light colours.
   var RLC = "#4F46E5", LLMC = "#F2665B";
   var THREADS = [
-    { label: "POST-TRAINING", color: "#FFD3D1", dark: true },
-    { label: "REASONING", color: "#FFE1C2", dark: true },
-    { label: "RLVR TRACES", color: "#FFF1AE", dark: true },
-    { label: "EVALUATION", color: "#E0F4BF", dark: true },
-    { label: "AGENTS", color: "#C6EFD9", dark: true },
-    { label: "PROMPT AUG", color: "#C2ECF2", dark: true },
-    { label: "DEEP LEARNING", color: "#CADFFF", dark: true, fs: 10.5 },
-    { label: "ROBOTICS", color: "#D7D2FF", dark: true },
-    { label: "DECISION MAKING", color: "#EAD3FF", dark: true, fs: 10 },
-    { label: "ONLINE LEARNING", color: "#FFD3EA", dark: true, fs: 10 }
+    { label: "POST-TRAINING", color: "#FF3B30" },
+    { label: "REASONING", color: "#FF9500" },
+    { label: "RLVR TRACES", color: "#FFCC00", dark: true },
+    { label: "EVALUATION", color: "#34C759" },
+    { label: "AGENTS", color: "#00B8A9" },
+    { label: "PROMPT AUG", color: "#0A84FF" },
+    { label: "DEEP LEARNING", color: "#5856D6", fs: 10.5 },
+    { label: "ROBOTICS", color: "#AF52DE" },
+    { label: "DECISION MAKING", color: "#FF2D78", fs: 10 },
+    { label: "ONLINE LEARNING", color: "#32ADE6", fs: 10 }
   ];
   // One message per spin. The first plays by itself when the page opens.
   var ROUNDS = [
@@ -72,7 +72,7 @@
       node("path", { d: "M" + p0 + " A" + R + "," + R + " 0 0 1 " + p1 + " L" + p2 + " A" + HUB + "," + HUB + " 0 0 0 " + p3 + " Z", fill: t.color, stroke: INK, "stroke-width": 3 }, g);
     }
     var mid = a0 + SEG / 2, m = polar((R + HUB) / 2 + 8, mid);
-    var tx = node("text", { x: m[0], y: m[1], transform: "rotate(" + mid + " " + m[0] + " " + m[1] + ")", "text-anchor": "middle", "dominant-baseline": "central", "font-size": t.fs || 11.5, "font-weight": 800, "letter-spacing": 1, style: "fill:" + (t.dark ? INK : "#fff") + (t.split ? ";paint-order:stroke;stroke:#0F1B2D;stroke-width:3px;stroke-linejoin:round" : "") }, g);
+    var tx = node("text", { x: m[0], y: m[1], transform: "rotate(" + mid + " " + m[0] + " " + m[1] + ")", "text-anchor": "middle", "dominant-baseline": "central", "font-size": t.fs || 11.5, "font-weight": 800, "letter-spacing": 1, style: "fill:" + (t.dark ? INK : "#fff") + (!t.dark ? ";paint-order:stroke;stroke:rgba(15,27,45,.35);stroke-width:2px" : "") + (t.split ? ";paint-order:stroke;stroke:#0F1B2D;stroke-width:3px;stroke-linejoin:round" : "") }, g);
     tx.textContent = t.label;
   });
   // hub: RL on one half, LLMs on the other. The dividing line runs through the two shared slices.
