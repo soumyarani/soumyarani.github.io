@@ -23,7 +23,7 @@
   ];
   // One message per spin. The first plays by itself when the page opens.
   var ROUNDS = [
-    { tokens: ["Thank", "you", "for", "visiting", "my", "profile,", "\n", "I", "appreciate", "you"], pop: "Thank you!" },
+    { tokens: ["Thank", "you", "for", "visiting", "my", "profile,", "\n", "I", "appreciate", "you 😊"], pop: "Thank you!" },
     { tokens: ["You", "spun", "again,", "\n", "I", "really", "appreciate", "it"], pop: "Appreciate it!" },
     { tokens: ["Still", "here?", "\n", "That", "means", "a", "lot"], pop: "You are awesome!" }
   ];
