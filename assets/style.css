@@ -1,10 +1,10 @@
 /* Layout concept: a wheel that spins up, slows down and stops on a reward. The wheel's six colours are the only saturated colour on the site; everything else is ink and cool paper. */
 :root {
-  --bg: #EEF2F6;
-  --surface: #FAFBFC;
+  --bg: #FFFFFF;
+  --surface: #FAFAF9;
   --ink: #0F1B2D;
   --muted: #4F6073;
-  --line: #D3DBE4;
+  --line: #E6E8EB;
   --accent: #2F5BEA;
   --accent-soft: #DDE6FC;
   --c1: #FF5A1F;
@@ -13,8 +13,8 @@
   --c4: #2F5BEA;
   --c5: #7A55E0;
   --c6: #1DB36B;
-  --font-display: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
-  --font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
@@ -213,3 +213,21 @@ svg .bx { fill: var(--surface); stroke: var(--ink); }
 .pill .fa-youtube { color: #FF0000; } .pill .fa-linkedin { color: #0A66C2; } .pill .fa-google-scholar { color: #4285F4; }
 .pill.primary .fa-google-scholar { color: #8DB2FF; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Lighter, quieter type (white background, Karpathy-style) */
+body { font-size: 16px; line-height: 1.65; }
+h1, h2, h3 { font-weight: 600; letter-spacing: -0.015em; line-height: 1.2; }
+h1 { font-size: clamp(30px, 3.6vw, 42px); font-weight: 600; }
+h2 { font-size: clamp(22px, 2.2vw, 27px); }
+h3 { font-size: 17px; letter-spacing: -0.005em; }
+.lede { font-size: clamp(16px, 1.5vw, 18px); max-width: 60ch; }
+.hero { padding-block: 48px 56px; }
+.hero h1 { margin-bottom: 16px; }
+.proj-hero h1 { font-size: clamp(28px, 3.2vw, 38px); }
+.pub h3 { font-size: 16.5px; font-weight: 600; }
+.fact b { font-size: 24px; font-weight: 600; }
+.poster .big { font-size: 30px; font-weight: 700; }
+.poster .band h2 { font-size: clamp(20px, 2.4vw, 26px); }
+nav.top .brand { font-weight: 600; }
+.statement p, .prose p { font-family: "Source Serif 4", Georgia, serif; font-size: 17.5px; line-height: 1.7; }
+section { padding-block: 48px; }
