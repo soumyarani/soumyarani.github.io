@@ -6,13 +6,20 @@
   if (!el) return;
 
   var INK = "#0F1B2D", GOLD = "#F5B82E", GOOD = "#1DB36B", BAD = "#E5484D";
+  // The wheel is a map of the research: RL on the left half, LLMs on the right,
+  // and topics that belong to both (purple) sit on the dividing line at the top and bottom.
+  var RLC = "#2F5BEA", LLMC = "#FF5A1F", BOTH = "#7A55E0";
   var THREADS = [
-    { label: "POST-TRAINING", color: "#FF5A1F", tag: "Paper · NeurIPS 2025 workshop", title: "RL in Name Only?", line: "GRPO-style RL post-training reduces to filtered iterative supervised fine-tuning, and the structure of the LLM MDP explains why responses get longer.", href: "papers/rl-in-name-only.html" },
-    { label: "RLVR TRACES", color: GOLD, dark: true, tag: "Paper · NeurIPS 2025 workshop", title: "Local Coherence or Global Validity?", line: "Do the reasoning traces that RL with verifiable rewards produces stay valid from step to step, or only look coherent locally? A study on math problems.", href: "papers/local-coherence.html" },
-    { label: "REASONING", color: "#14A39A", tag: "Position paper", title: "Stop Anthropomorphizing Intermediate Tokens", line: "Why we should not read a model's intermediate tokens as human-like thinking traces.", href: "https://arxiv.org/abs/2504.09762" },
-    { label: "HINGE LOSS", color: "#2F5BEA", tag: "Ongoing work", title: "GRPO-Unhinged", line: "With binary rewards the clipped GRPO update is a weighted hinge loss on outcome-labeled tokens, which places RLVR in classification-based policy iteration.", href: "projects/grpo-unhinged.html" },
-    { label: "PROMPT AUG", color: "#7A55E0", tag: "Paper · under review, ICLR 2027", title: "RLVR as Prompt Augmentation", line: "The optimal RLVR policy is the base policy conditioned on success, so it reinforces any reasoning that reaches the correct answer, valid or not.", href: "papers/prompt-augmentation.html" },
-    { label: "RL FOR ROBOTICS", fs: 10.5, color: "#F7F9FB", dark: true, tag: "Paper · ICRA 2022", title: "Dynamic Mirror Descent MPC", line: "Model-based lookahead that makes off-policy RL more sample-efficient, tested on MuJoCo and a real quadruped.", href: "https://soumyarani.github.io/DMD-MPC-RL/" }
+    { label: "POST-TRAINING", split: [RLC, LLMC] },        // top, shared: half RL, half LLM
+    { label: "RLVR TRACES", split: [RLC, LLMC] },          // a combination of both
+    { label: "REASONING", color: "#F5B82E", dark: true },
+    { label: "EVALUATION", color: "#E5484D" },
+    { label: "AGENTS", color: "#F08A24" },
+    { label: "PROMPT AUG", split: [LLMC, RLC] },           // bottom, shared
+    { label: "RL FOR ROBOTICS", color: "#14A39A", fs: 10 }, // RL side
+    { label: "DECISION MAKING", color: "#1E88E5", fs: 10 },
+    { label: "ONLINE LEARNING", color: "#3949AB", fs: 10 },
+    { label: "HINGE LOSS", color: "#2F5BEA" }
   ];
   // One message per spin. The first plays by itself when the page opens.
   var ROUNDS = [
@@ -57,19 +64,26 @@
   THREADS.forEach(function (t, i) {
     var a0 = -90 + i * SEG, a1 = a0 + SEG;
     var p0 = polar(R, a0), p1 = polar(R, a1), p2 = polar(HUB, a1), p3 = polar(HUB, a0);
-    node("path", { d: "M" + p0 + " A" + R + "," + R + " 0 0 1 " + p1 + " L" + p2 + " A" + HUB + "," + HUB + " 0 0 0 " + p3 + " Z", fill: t.color, stroke: INK, "stroke-width": 3 }, g);
+    if (t.split) {
+      var am = a0 + SEG / 2, pm = polar(R, am), pmh = polar(HUB, am);
+      node("path", { d: "M" + p0 + " A" + R + "," + R + " 0 0 1 " + pm + " L" + pmh + " A" + HUB + "," + HUB + " 0 0 0 " + p3 + " Z", fill: t.split[0] }, g);
+      node("path", { d: "M" + pm + " A" + R + "," + R + " 0 0 1 " + p1 + " L" + p2 + " A" + HUB + "," + HUB + " 0 0 0 " + pmh + " Z", fill: t.split[1] }, g);
+      node("path", { d: "M" + p0 + " A" + R + "," + R + " 0 0 1 " + p1 + " L" + p2 + " A" + HUB + "," + HUB + " 0 0 0 " + p3 + " Z", fill: "none", stroke: INK, "stroke-width": 3 }, g);
+    } else {
+      node("path", { d: "M" + p0 + " A" + R + "," + R + " 0 0 1 " + p1 + " L" + p2 + " A" + HUB + "," + HUB + " 0 0 0 " + p3 + " Z", fill: t.color, stroke: INK, "stroke-width": 3 }, g);
+    }
     var mid = a0 + SEG / 2, m = polar((R + HUB) / 2 + 8, mid);
-    var tx = node("text", { x: m[0], y: m[1], transform: "rotate(" + mid + " " + m[0] + " " + m[1] + ")", "text-anchor": "middle", "dominant-baseline": "central", "font-size": t.fs || 12.5, "font-weight": 800, "letter-spacing": 1, style: "fill:" + (t.dark ? INK : "#fff") }, g);
+    var tx = node("text", { x: m[0], y: m[1], transform: "rotate(" + mid + " " + m[0] + " " + m[1] + ")", "text-anchor": "middle", "dominant-baseline": "central", "font-size": t.fs || 11.5, "font-weight": 800, "letter-spacing": 1, style: "fill:" + (t.dark ? INK : "#fff") + (t.split ? ";paint-order:stroke;stroke:#0F1B2D;stroke-width:3px;stroke-linejoin:round" : "") }, g);
     tx.textContent = t.label;
   });
-  // hub: the verifier, split into a green check and a red cross. It turns with the wheel.
+  // hub: RL on one half, LLMs on the other. The dividing line runs through the two shared slices.
   node("circle", { cx: 0, cy: 0, r: HUB, fill: INK }, g);
-  var dr = HUB - 9;
-  node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 0 0," + dr + " Z", fill: GOOD }, g);
-  node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 1 0," + dr + " Z", fill: BAD }, g);
-  node("line", { x1: 0, y1: -dr, x2: 0, y2: dr, stroke: INK, "stroke-width": 3 }, g);
-  node("polyline", { points: "-34,2 -24,13 -8,-9", fill: "none", stroke: "#fff", "stroke-width": 7, "stroke-linecap": "round", "stroke-linejoin": "round" }, g);
-  node("path", { d: "M9,-9 L25,9 M25,-9 L9,9", fill: "none", stroke: "#fff", "stroke-width": 7, "stroke-linecap": "round" }, g);
+  var dr = HUB - 9, hub = node("g", { transform: "rotate(" + (SEG / 2) + ")" }, g);
+  node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 0 0," + dr + " Z", fill: RLC }, hub);
+  node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 1 0," + dr + " Z", fill: LLMC }, hub);
+  node("line", { x1: 0, y1: -dr, x2: 0, y2: dr, stroke: INK, "stroke-width": 3 }, hub);
+  var t1 = node("text", { x: -dr / 2 + 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 20, "font-weight": 800, style: "fill:#fff" }, hub); t1.textContent = "RL";
+  var t2 = node("text", { x: dr / 2 - 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 15, "font-weight": 800, style: "fill:#fff" }, hub); t2.textContent = "LLMs";
   // pointer (fixed)
   node("path", { d: "M-17,-270 L17,-270 L17,-244 L0,-224 L-17,-244 Z", fill: GOLD, stroke: INK, "stroke-width": 4, "stroke-linejoin": "round" }, el);
   node("circle", { cx: 0, cy: -257, r: 3.5, fill: INK }, el);
