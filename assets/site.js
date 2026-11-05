@@ -136,11 +136,11 @@
       apply();
       var slice = Math.floor(theta / SEG);
       if (slice !== lastSlice) { lastSlice = slice; if (n < TOKENS.length) { tok(TOKENS[n]); n++; } }
-      if (w > 6) { requestAnimationFrame(frame); return; }
+      if (w > 22) { requestAnimationFrame(frame); return; } // stop before the slow crawl at the end
       spinning = false; btn.disabled = false;
       while (n < TOKENS.length) { tok(TOKENS[n]); n++; }
       tok(FINAL, "gold"); stage(1);
-      setTimeout(function () { tok(THANKS, "ok"); landed = indexAt(); burst(THANKS); startFacts(); round++; btn.hidden = false; }, 450);
+      tok(THANKS, "ok"); landed = indexAt(); burst(THANKS); startFacts(); round++; btn.hidden = false;
     }
     requestAnimationFrame(frame);
   }
