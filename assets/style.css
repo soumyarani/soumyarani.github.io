@@ -274,3 +274,4 @@ section { padding-block: 48px; }
 .featured .project .go { grid-area: go; }
 @media (max-width: 760px) { .featured .project { grid-template-columns: minmax(0, 1fr); grid-template-areas: "chip" "img" "h" "p" "go"; } }
 .projects.proj-1-2 { grid-template-columns: minmax(0, 1fr) !important; gap: 20px; }
+.hero h1 { font-size: clamp(26px, 2.75vw, 35px); }
