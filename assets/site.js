@@ -7,18 +7,19 @@
 
   var INK = "#0F1B2D", GOLD = "#F5B82E", GOOD = "#1DB36B", BAD = "#E5484D";
   // Hub: RL and LLMs. Outside: the topics, in a soft spectrum of light colours.
-  var RLC = "#FFFFFF", LLMC = "#0F1B2D";
+  var RLC = "#3730A3", LLMC = "#F59E0B";
+  // Two anchor colours in the hub (indigo RL, amber LLMs); the slices form one loop from the warm family into the cool one.
   var THREADS = [
-    { label: "POST-TRAINING", color: "#FF3B30" },
-    { label: "REASONING", color: "#FF9500" },
-    { label: "RLVR TRACES", color: "#FFCC00", dark: true },
-    { label: "EVALUATION", color: "#34C759" },
-    { label: "AGENTS", color: "#00B8A9" },
-    { label: "PROMPT AUG", color: "#0A84FF" },
-    { label: "DEEP LEARNING", color: "#5856D6", fs: 10.5 },
-    { label: "ROBOTICS", color: "#AF52DE" },
-    { label: "DECISION MAKING", color: "#FF2D78", fs: 10 },
-    { label: "ONLINE LEARNING", color: "#32ADE6", fs: 10 }
+    { label: "POST-TRAINING", color: "#FBBF24", dark: true },
+    { label: "REASONING", color: "#F59E0B", dark: true },
+    { label: "RLVR TRACES", color: "#F97316" },
+    { label: "EVALUATION", color: "#EF4444" },
+    { label: "AGENTS", color: "#EC4899" },
+    { label: "PROMPT AUG", color: "#8B5CF6" },
+    { label: "DEEP LEARNING", color: "#4F46E5", fs: 10.5 },
+    { label: "ROBOTICS", color: "#2563EB" },
+    { label: "DECISION MAKING", color: "#0EA5E9", fs: 10 },
+    { label: "ONLINE LEARNING", color: "#14B8A6", fs: 10 }
   ];
   // One message per spin. The first plays by itself when the page opens.
   var ROUNDS = [
@@ -81,8 +82,8 @@
   node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 0 0," + dr + " Z", fill: RLC }, hub);
   node("path", { d: "M0," + (-dr) + " A" + dr + "," + dr + " 0 0 1 0," + dr + " Z", fill: LLMC }, hub);
   node("circle", { cx: 0, cy: 0, r: dr, fill: "none", stroke: "#FFFFFF", "stroke-width": 3 }, hub);
-  var t1 = node("text", { x: -dr / 2 + 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 20, "font-weight": 800, style: "fill:#0F1B2D" }, hub); t1.textContent = "RL";
-  var t2 = node("text", { x: dr / 2 - 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 15, "font-weight": 800, style: "fill:#fff" }, hub); t2.textContent = "LLMs";
+  var t1 = node("text", { x: -dr / 2 + 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 20, "font-weight": 800, style: "fill:#fff" }, hub); t1.textContent = "RL";
+  var t2 = node("text", { x: dr / 2 - 2, y: 1, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 15, "font-weight": 800, style: "fill:#0F1B2D" }, hub); t2.textContent = "LLMs";
   // pointer (fixed)
   node("path", { d: "M-17,-270 L17,-270 L17,-244 L0,-224 L-17,-244 Z", fill: GOLD, stroke: INK, "stroke-width": 4, "stroke-linejoin": "round" }, el);
   node("circle", { cx: 0, cy: -257, r: 3.5, fill: INK }, el);
