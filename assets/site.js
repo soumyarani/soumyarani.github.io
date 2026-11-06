@@ -28,18 +28,19 @@
     { tokens: ["Still", "here?", "\n", "That", "means", "a", "lot"], pop: "You are awesome!" }
   ];
   var round = 0, TOKENS = ROUNDS[0].tokens, FINAL = "✨", THANKS = ROUNDS[0].pop;
-  // Surprise facts, all from the November 2026 resume. They play in a loop after the wheel stops.
+  // Facts about my work, each with its own label, all from the November 2026 resume. They play in a loop after the wheel stops.
   var FACTS = [
-    { k: "From Civil Engineering to RL Research", t: "Before computer science, I was an Assistant Executive Engineer in the Roads\u00a0and\u00a0Buildings\u00a0Department of the Government\u00a0of\u00a0Telangana." },
-    { k: "Rank 136", t: "I ranked 136 out of 107,893 in GATE\u00a0Computer\u00a0Science\u00a0and\u00a0Engineering\u00a02018." },
-    { k: "Real robots", t: "My M.Tech method doubled sample efficiency on a real robot\u00a0arm\u00a0and\u00a0quadruped (ICRA\u00a02022)." },
-    { k: "Microseconds", t: "I wrote a quadruped controller in lightweight C++ that runs in microseconds, down from the milliseconds in the source\u00a0paper." },
-    { k: "A patent", t: "I am a co-inventor on a US\u00a0patent\u00a0application for scheduling manufacturing jobs." },
-    { k: "Energy markets", t: "At Microsoft Research India I built the RL framework for a renewable-energy\u00a0market, with carbon arbitrage and profit\u00a0maximization." },
-    { k: "Rollouts", t: "I worked with Prof.\u00a0Dimitri\u00a0Bertsekas on rollouts at every decoding step of an LLM, tested on Game\u00a0of\u00a024." },
-    { k: "The hinge", t: "With binary rewards, the clipped GRPO update is a weighted\u00a0hinge\u00a0loss. That is the idea behind GRPO-Unhinged." },
-    { k: "Right answer, wrong reasons", t: "After RLVR, correct answers reached through incoherent reasoning go up in every\u00a0setting\u00a0we\u00a0tested." }
+    { l: "Where I started", k: "From Civil Engineering to RL Research", t: "Before computer science, I was an Assistant Executive Engineer in the Roads and Buildings Department of the Government of Telangana." },
+    { l: "A milestone", k: "Rank 136", t: "I ranked 136 out of 107,893 in GATE Computer Science and Engineering 2018." },
+    { l: "Impactful result", k: "Real robots", t: "My M.Tech method doubled sample efficiency on a real robot arm and quadruped (ICRA\u00a02022)." },
+    { l: "Engineering result", k: "Microseconds", t: "I wrote a quadruped controller in lightweight C++ that runs in microseconds, down from the milliseconds in the source paper." },
+    { l: "Industry impact", k: "A patent", t: "I am a co-inventor on a US patent application for scheduling manufacturing jobs." },
+    { l: "Industry research", k: "Energy markets", t: "At Microsoft Research India I built the RL framework for a renewable-energy market, with carbon arbitrage and profit maximization." },
+    { l: "A collaboration", k: "Rollouts", t: "I worked with Prof.\u00a0Dimitri\u00a0Bertsekas on rollouts at every decoding step of an LLM, tested on Game\u00a0of\u00a024." },
+    { l: "Key insight", k: "The hinge", t: "With binary rewards, the clipped GRPO update is a weighted hinge loss. That is the idea behind GRPO-Unhinged." },
+    { l: "Surprising finding", k: "Right answer, wrong reasons", t: "After RLVR, correct answers reached through incoherent reasoning go up in every setting we tested." }
   ];
+  var typeT = null, measuring = false;
   var factTimer = null, factIdx = 0, landed = null;
   var N = THREADS.length, SEG = 360 / N, R = 200, HUB = 66, NS = "http://www.w3.org/2000/svg";
   var theta = -SEG / 2; // wheel rotation in degrees, clockwise. Starts centred on segment 0.
@@ -127,17 +128,17 @@
     if (reduce) { var Rr = ROUNDS[Math.min(round, ROUNDS.length - 1)]; TOKENS = Rr.tokens; THANKS = Rr.pop; theta = -(Math.floor(Math.random() * N) * SEG + SEG / 2); apply(); fullStream(); landed = indexAt(); startFacts(); round++; btn.hidden = false; return; }
     var R0 = ROUNDS[Math.min(round, ROUNDS.length - 1)]; TOKENS = R0.tokens; THANKS = R0.pop;
     spinning = true; btn.disabled = true;
-    var w = 750 + Math.random() * 350, last = performance.now(), k = 1.05, lastSlice = Math.floor(theta / SEG), n = 0;
+    // a slow, smooth ease-out over a fixed time, so the wheel glides to a stop instead of halting
+    var D = 7000, t0 = performance.now(), from = theta, turns = 360 * (2.2 + Math.random() * 0.8), n = 0;
+    var gap = (D * 0.8) / TOKENS.length; // the words arrive one by one at a steady pace
     stream.innerHTML = ""; stream.classList.add("typing");
-    if (round > 0) card.innerHTML = '<div class="tagline eyebrow">✨ Spinning</div><h3>Here comes another surprise…</h3>';
+    if (round > 0) { clearTimeout(typeT); card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>agent › looking through my work…</div>'; }
     stage(0);
     function frame(now) {
-      var dt = Math.min(0.05, (now - last) / 1000); last = now;
-      theta += w * dt; w *= Math.exp(-k * dt);
-      apply();
-      var slice = Math.floor(theta / SEG);
-      if (slice !== lastSlice) { lastSlice = slice; if (n < TOKENS.length) { tok(TOKENS[n]); n++; } }
-      if (w > 22) { requestAnimationFrame(frame); return; } // stop before the slow crawl at the end
+      var t = Math.min(1, (now - t0) / D);
+      theta = from + turns * (1 - Math.pow(1 - t, 4)); apply();
+      while (n < TOKENS.length && now - t0 >= n * gap) { tok(TOKENS[n]); n++; }
+      if (t < 1) { requestAnimationFrame(frame); return; }
       spinning = false; btn.disabled = false;
       while (n < TOKENS.length) { tok(TOKENS[n]); n++; }
       stage(1); stream.classList.remove("typing");
@@ -165,26 +166,34 @@
     var f = FACTS[factIdx % FACTS.length];
     card.innerHTML = "";
     var tg = document.createElement("div"); tg.className = "tagline eyebrow";
-    tg.textContent = "✨ Surprise";
+    tg.className = "tagline agent"; tg.innerHTML = '<i class="pulse"></i>agent › ' + f.l;
     var h = document.createElement("h3"); h.textContent = f.k;
-    var p = document.createElement("p"); p.textContent = f.t; p.className = "fact-text";
+    var p = document.createElement("p"); p.className = "fact-text";
     card.appendChild(tg); card.appendChild(h); card.appendChild(p);
+    // the agent writes the answer out word by word
+    if (measuring) { p.textContent = f.t; return; }
+    var words = f.t.split(" "), i = 0; clearTimeout(typeT);
+    (function next() { if (i >= words.length) { tg.querySelector(".pulse").classList.add("done"); return; } p.textContent += (i ? " " : "") + words[i++]; typeT = setTimeout(next, 120); })();
   }
   // each spin reveals the next surprise, in a shuffled order with no repeats until all are seen
-  var order = FACTS.map(function (_, i) { return i; }).sort(function () { return Math.random() - 0.5; }), pos = -1;
+  // research findings come first, then the rest of the story
+  function shuffled(a) { return a.sort(function () { return Math.random() - 0.5; }); }
+  var RES = ["Surprising finding", "Key insight", "Impactful result", "A collaboration"];
+  var order = shuffled(FACTS.map(function (_, i) { return i; }).filter(function (i) { return RES.indexOf(FACTS[i].l) >= 0; }))
+    .concat(shuffled(FACTS.map(function (_, i) { return i; }).filter(function (i) { return RES.indexOf(FACTS[i].l) < 0; }))), pos = -1;
   function startFacts() {
     pos = (pos + 1) % order.length; factIdx = order[pos]; renderFact();
-    btn.textContent = "Spin the wheel for another surprise ✨";
+    btn.textContent = "Spin again to know more about my work";
   }
   function intro() {
-    card.innerHTML = '<div class="tagline eyebrow">✨ For you</div><h3>I have a surprise for you, for visiting.</h3><p>Watch the wheel…</p>';
+    card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>agent › hello</div><h3>Picking something from my work for you…</h3>';
   }
 
   // Size the surprise box to its longest surprise, so the box never grows or shrinks between spins.
   function sizeCard() {
     card.style.minHeight = ""; var keep = card.innerHTML, max = 0, saved = factIdx;
-    for (var i = 0; i < FACTS.length; i++) { factIdx = i; renderFact(); max = Math.max(max, card.offsetHeight); }
-    factIdx = saved; card.innerHTML = keep; card.style.minHeight = max + "px";
+    measuring = true; for (var i = 0; i < FACTS.length; i++) { factIdx = i; renderFact(); max = Math.max(max, card.offsetHeight); }
+    measuring = false; factIdx = saved; card.innerHTML = keep; card.style.minHeight = max + "px";
   }
   // Reserve room for the longest thank-you line too, so nothing below the wheel moves while it streams.
   function sizeStream() {
