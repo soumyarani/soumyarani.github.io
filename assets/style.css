@@ -256,7 +256,7 @@ section { padding-block: 48px; }
 .groups a:hover { color: var(--accent); }
 .groups svg, .groups i { width: 1.15em; height: 1.15em; font-size: 18px; }
 .groups .fa-linkedin { color: #0A66C2; } .groups .fa-google-scholar { color: #4285F4; } .groups .fa-envelope { color: #EA4335; }
-@media (max-width: 560px) { .profile { flex-direction: column; align-items: flex-start; } .groups > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+@media (max-width: 560px) { .profile { flex-direction: column; align-items: flex-start; } .groups > div { grid-template-columns: 112px minmax(0, 1fr); gap: 4px; } .groups dt { font-size: 10px; letter-spacing: .03em; } .groups dd { font-size: 14px; gap: 4px 9px; } }
 .groups .fa-kaggle { color: #20BEFF; }
 .groups a.mail { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .groups .fa-envelope { color: var(--accent) !important; }
