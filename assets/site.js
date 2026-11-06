@@ -106,7 +106,7 @@
     if (spinning) return;
     var R0 = ROUNDS[Math.min(round, ROUNDS.length - 1)]; TOKENS = R0.tokens; round++;
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { fullStream(); return; }
+    if (reduce) { fullStream(); if (onStop) { var f0 = onStop; onStop = null; setTimeout(f0, 600); } return; }
     spinning = true;
     var D = 7000, t0 = performance.now(), from = theta, turns = 360 * (2.2 + Math.random() * 0.8), n = 0;
     var gap = (D * 0.8) / TOKENS.length;
@@ -118,8 +118,26 @@
       if (t < 1) { requestAnimationFrame(frame); return; }
       while (n < TOKENS.length) { tok(TOKENS[n]); n++; }
       stream.classList.remove("typing"); spinning = false;
+      burst(R0.pop);
+      if (onStop) { var f = onStop; onStop = null; setTimeout(f, 700); }
     }
     requestAnimationFrame(frame);
+  }
+  var onStop = null;
+  function burst(msg) {
+    var b = document.createElement("div"); b.className = "burst"; b.setAttribute("aria-hidden", "true");
+    for (var i = 0; i < 10; i++) {
+      var sp = document.createElement("span"); sp.textContent = i % 3 ? "✨" : "★";
+      var a = (i / 10) * 2 * Math.PI + Math.random() * 0.3, d = 80 + Math.random() * 60;
+      sp.style.setProperty("--dx", (Math.cos(a) * d).toFixed(0) + "px");
+      sp.style.setProperty("--dy", (Math.sin(a) * d).toFixed(0) + "px");
+      sp.style.animationDelay = (Math.random() * 0.15).toFixed(2) + "s";
+      if (!(i % 3)) sp.style.color = ["#F5B82E", "#E67373", "#56B8A9", "#A08BE6"][i % 4];
+      b.appendChild(sp);
+    }
+    var t = document.createElement("strong"); t.className = "burst-thanks"; t.textContent = msg || "Thank you!"; b.appendChild(t);
+    box.appendChild(b);
+    setTimeout(function () { b.remove(); }, 4800);
   }
   // Reserve room for the longest thank-you, so nothing below the wheel moves while it streams.
   function sizeStream() {
@@ -143,16 +161,14 @@
 
   var root = document.createElement("div"); root.className = "chinni";
   root.innerHTML =
-    '<div class="ch-bubble" hidden><button class="ch-x" type="button" aria-label="Dismiss">×</button>' +
-      '<p><b>Hi, I’m Chinni.</b> Want to see something from Soumya’s work?</p><button class="ch-yes" type="button">Show me</button></div>' +
     '<div class="ch-panel" role="dialog" aria-label="Chinni" hidden>' +
-      '<div class="ch-head"><span class="ch-av" aria-hidden="true">✦</span><div><b>Chinni</b><small>A guide to Soumya’s work</small></div>' +
+      '<div class="ch-head"><span class="ch-av" aria-hidden="true">✦</span><div><b>Chinni</b><small>Hi, I’m Chinni, a guide to Soumya’s work</small></div>' +
       '<button class="ch-close" type="button" aria-label="Close">×</button></div>' +
       '<div class="ch-body" aria-live="polite"></div>' +
       '<div class="ch-foot"><button class="ch-next" type="button">Show me another</button></div></div>' +
     '<button class="ch-fab" type="button" aria-label="Open Chinni"><span class="ch-av" aria-hidden="true">✦</span><span class="ch-name">Chinni</span></button>';
   document.body.appendChild(root);
-  var bubble = root.querySelector(".ch-bubble"), panel = root.querySelector(".ch-panel"), body = root.querySelector(".ch-body"), fab = root.querySelector(".ch-fab");
+  var panel = root.querySelector(".ch-panel"), body = root.querySelector(".ch-body"), fab = root.querySelector(".ch-fab");
 
   function store(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } }
   function showFact() {
@@ -162,15 +178,12 @@
     var p = body.querySelector(".ch-text"), words = f.t.split(" "), i = 0; clearTimeout(typeT);
     (function next() { if (i >= words.length) return; p.textContent += (i ? " " : "") + words[i++]; typeT = setTimeout(next, 90); })();
   }
-  function open() { bubble.hidden = true; panel.hidden = false; root.classList.add("open"); store("chinni-seen", "1"); if (pos < 0) { body.innerHTML = '<p class="ch-hi">Hi, I’m Chinni. Here is something from Soumya’s work.</p>'; setTimeout(showFact, 700); } }
-  function close() { panel.hidden = true; root.classList.remove("open"); clearTimeout(typeT); }
+  function open() { panel.hidden = false; root.classList.add("open"); if (pos < 0) showFact(); }
+  function close() { store("chinni-closed", "1"); panel.hidden = true; root.classList.remove("open"); clearTimeout(typeT); }
   fab.addEventListener("click", function () { panel.hidden ? open() : close(); });
-  root.querySelector(".ch-yes").addEventListener("click", open);
-  bubble.querySelector("p").addEventListener("click", open);
-  root.querySelector(".ch-x").addEventListener("click", function () { bubble.hidden = true; store("chinni-seen", "1"); });
   root.querySelector(".ch-close").addEventListener("click", close);
   root.querySelector(".ch-next").addEventListener("click", showFact);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) close(); });
-  // the bubble says hello once the wheel has stopped, and only once per visit
-  if (!store("chinni-seen")) setTimeout(function () { if (panel.hidden) bubble.hidden = false; }, 9500);
+  // Chinni opens by herself with a finding once the wheel has stopped, unless she was closed earlier in this visit
+  if (!store("chinni-closed")) onStop = open;
 })();
