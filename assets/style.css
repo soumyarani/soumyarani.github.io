@@ -381,3 +381,9 @@ footer .quote em { font-family: var(--font-serif, "Source Serif 4", serif); }
 
 /* email, LinkedIn, X and YouTube on one line */
 @media (min-width: 1000px) { .contact { flex-wrap: nowrap; } }
+/* Chinni follows light and dark mode */
+.ch-fab, .ch-bubble, .ch-panel, .ch-next { background: var(--bg); color: var(--ink); }
+.ch-panel { box-shadow: 0 12px 40px rgba(0,0,0,.28), 0 0 0 1px var(--line); }
+.ch-fab { box-shadow: 0 6px 24px rgba(0,0,0,.22), 0 0 0 1px var(--line); }
+.ch-panel .ch-head b, .ch-body h3, .ch-text { color: var(--ink); }
+.ch-yes { background: var(--ink); color: var(--bg); }
