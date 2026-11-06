@@ -128,7 +128,7 @@
     var R0 = ROUNDS[Math.min(round, ROUNDS.length - 1)]; TOKENS = R0.tokens; THANKS = R0.pop;
     spinning = true; btn.disabled = true;
     var w = 750 + Math.random() * 350, last = performance.now(), k = 1.05, lastSlice = Math.floor(theta / SEG), n = 0;
-    stream.innerHTML = "";
+    stream.innerHTML = ""; stream.classList.add("typing");
     if (round > 0) card.innerHTML = '<div class="tagline eyebrow">✨ Spinning</div><h3>Here comes another surprise…</h3>';
     stage(0);
     function frame(now) {
@@ -140,7 +140,7 @@
       if (w > 22) { requestAnimationFrame(frame); return; } // stop before the slow crawl at the end
       spinning = false; btn.disabled = false;
       while (n < TOKENS.length) { tok(TOKENS[n]); n++; }
-      stage(1);
+      stage(1); stream.classList.remove("typing");
       landed = indexAt(); burst(THANKS); startFacts(); round++; btn.hidden = false;
     }
     requestAnimationFrame(frame);
@@ -159,7 +159,7 @@
     }
     var t = document.createElement("strong"); t.className = "burst-thanks"; t.textContent = msg || "Thank you!"; b.appendChild(t);
     box.appendChild(b);
-    setTimeout(function () { b.remove(); }, 2200);
+    setTimeout(function () { b.remove(); }, 4800);
   }
   function renderFact() {
     var f = FACTS[factIdx % FACTS.length];
@@ -186,9 +186,16 @@
     for (var i = 0; i < FACTS.length; i++) { factIdx = i; renderFact(); max = Math.max(max, card.offsetHeight); }
     factIdx = saved; card.innerHTML = keep; card.style.minHeight = max + "px";
   }
-  apply(); sizeCard(); intro(); stream.innerHTML = "";
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { var k = card.innerHTML; sizeCard(); card.innerHTML = k; });
-  window.addEventListener("resize", function () { var k = card.innerHTML; sizeCard(); card.innerHTML = k; });
+  // Reserve room for the longest thank-you line too, so nothing below the wheel moves while it streams.
+  function sizeStream() {
+    stream.style.minHeight = ""; var max = 0, saved = TOKENS;
+    ROUNDS.forEach(function (r) { TOKENS = r.tokens; fullStream(); max = Math.max(max, stream.offsetHeight); });
+    TOKENS = saved; stream.innerHTML = ""; stream.style.minHeight = max + "px";
+  }
+  function sizeAll() { var k = card.innerHTML, keepS = stream.innerHTML; sizeCard(); if (!spinning) { sizeStream(); stream.innerHTML = keepS; } card.innerHTML = k; }
+  apply(); sizeCard(); sizeStream(); intro(); stream.innerHTML = "";
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeAll);
+  window.addEventListener("resize", sizeAll);
   btn.addEventListener("click", spin);
   el.addEventListener("click", spin);
   btn.hidden = true;
