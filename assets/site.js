@@ -1,5 +1,5 @@
-/* The wheel on the home page. A thank-you note streams in as it spins, and it stops on a research thread.
-   The hub is the verifier: green check or red cross. */
+/* The wheel on the home page spins while a thank-you streams in.
+   Chinni, a small guide in the corner, shows findings from my work. */
 (function () {
   "use strict";
   var el = document.getElementById("wheel");
@@ -27,8 +27,8 @@
     { tokens: ["You", "spun", "again,", "\n", "I", "really", "appreciate", "it"], pop: "Appreciate it!" },
     { tokens: ["Still", "here?", "\n", "That", "means", "a", "lot"], pop: "You are awesome!" }
   ];
-  var round = 0, TOKENS = ROUNDS[0].tokens, FINAL = "✨", THANKS = ROUNDS[0].pop;
-  // Facts about my work, each with its own label, all from the November 2026 resume. They play in a loop after the wheel stops.
+  var round = 0, TOKENS = ROUNDS[0].tokens;
+  // Findings for Chinni to show, each with its own label, all from the November 2026 resume.
   var FACTS = [
     { l: "Where she started", k: "From Civil Engineering to RL Research", t: "Before computer science, Soumya was an Assistant Executive Engineer in the Roads and Buildings Department of the Government of Telangana." },
     { l: "A milestone", k: "Rank 136", t: "Soumya ranked 136 out of 107,893 in GATE Computer Science and Engineering 2018." },
@@ -40,8 +40,6 @@
     { l: "Key insight", k: "The hinge", t: "With binary rewards, the clipped GRPO update is a weighted hinge loss. That is the idea behind her ongoing work, GRPO-Unhinged." },
     { l: "Surprising finding", k: "Right answer, wrong reasons", t: "After RLVR, correct answers reached through incoherent reasoning go up in every setting she tested." }
   ];
-  var typeT = null, measuring = false;
-  var factTimer = null, factIdx = 0, landed = null;
   var N = THREADS.length, SEG = 360 / N, R = 200, HUB = 66, NS = "http://www.w3.org/2000/svg";
   var theta = -SEG / 2; // wheel rotation in degrees, clockwise. Starts centred on segment 0.
   var spinning = false;
@@ -89,125 +87,90 @@
   node("path", { d: "M-17,-270 L17,-270 L17,-244 L0,-224 L-17,-244 Z", fill: GOLD, stroke: INK, "stroke-width": 4, "stroke-linejoin": "round" }, el);
   node("circle", { cx: 0, cy: -257, r: 3.5, fill: INK }, el);
 
-  var card = document.getElementById("reward");
-  var btn = document.getElementById("spin");
-  var stages = [];
   var box = el.parentNode;
-  var visits = null;
   var stream = document.getElementById("stream");
 
   function apply() { g.setAttribute("transform", "rotate(" + theta.toFixed(2) + ")"); }
-  function indexAt() { var phi = (((-theta) % 360) + 360) % 360; return Math.floor(phi / SEG) % N; }
-  function stage(n) { for (var i = 0; i < stages.length; i++) stages[i].classList.toggle("on", i === n); }
-  function tok(text, cls) {
+  function tok(text) {
     if (text === "\n") { var br = document.createElement("i"); br.className = "tok-br"; stream.appendChild(br); return; }
-    var s = document.createElement("span"); s.className = "tok" + (cls ? " " + cls : ""); s.textContent = text;
+    var s = document.createElement("span"); s.className = "tok"; s.textContent = text;
     // colour each word with the wheel's palette, in order
     var k = stream.querySelectorAll(".tok").length, t = THREADS[k % THREADS.length];
-    if (cls === "gold") { s.style.background = LLMC; s.style.color = INK; }
-    else if (cls === "ok") { s.style.background = RLC; s.style.color = "#fff"; }
-    else { s.style.background = t.color; s.style.color = t.dark ? INK : "#fff"; }
-    s.style.borderColor = "transparent";
+    s.style.background = t.color; s.style.color = t.dark ? INK : "#fff"; s.style.borderColor = "transparent";
     stream.appendChild(s);
   }
   function fullStream() { stream.innerHTML = ""; TOKENS.forEach(function (t) { tok(t); }); }
-  function show(i) {
-    var t = THREADS[i];
-    card.innerHTML = "";
-    var tg = document.createElement("div"); tg.className = "tagline eyebrow";
-    var dot = document.createElement("span"); dot.className = "dot"; dot.style.background = t.color; if (t.dark && t.color !== GOLD) dot.style.boxShadow = "inset 0 0 0 1px " + INK;
-    tg.appendChild(dot); tg.appendChild(document.createTextNode(t.tag));
-    var h = document.createElement("h3"); var a = document.createElement("a"); a.href = t.href; a.textContent = t.title; h.appendChild(a);
-    var p = document.createElement("p"); p.textContent = t.line;
-    card.appendChild(tg); card.appendChild(h); card.appendChild(p);
-  }
 
+  // The wheel spins slowly and glides to a stop while the thank-you writes itself out, word by word.
   function spin() {
     if (spinning) return;
+    var R0 = ROUNDS[Math.min(round, ROUNDS.length - 1)]; TOKENS = R0.tokens; round++;
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { var Rr = ROUNDS[Math.min(round, ROUNDS.length - 1)]; TOKENS = Rr.tokens; THANKS = Rr.pop; theta = -(Math.floor(Math.random() * N) * SEG + SEG / 2); apply(); fullStream(); landed = indexAt(); startFacts(); round++; btn.hidden = false; return; }
-    var R0 = ROUNDS[Math.min(round, ROUNDS.length - 1)]; TOKENS = R0.tokens; THANKS = R0.pop;
-    spinning = true; btn.disabled = true;
-    // a slow, smooth ease-out over a fixed time, so the wheel glides to a stop instead of halting
+    if (reduce) { fullStream(); return; }
+    spinning = true;
     var D = 7000, t0 = performance.now(), from = theta, turns = 360 * (2.2 + Math.random() * 0.8), n = 0;
-    var gap = (D * 0.8) / TOKENS.length; // the words arrive one by one at a steady pace
+    var gap = (D * 0.8) / TOKENS.length;
     stream.innerHTML = ""; stream.classList.add("typing");
-    if (round > 0) { clearTimeout(typeT); card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>Chinni is looking through Soumya’s work…</div>'; }
-    stage(0);
     function frame(now) {
       var t = Math.min(1, (now - t0) / D);
       theta = from + turns * (1 - Math.pow(1 - t, 4)); apply();
       while (n < TOKENS.length && now - t0 >= n * gap) { tok(TOKENS[n]); n++; }
       if (t < 1) { requestAnimationFrame(frame); return; }
-      spinning = false; btn.disabled = false;
       while (n < TOKENS.length) { tok(TOKENS[n]); n++; }
-      stage(1); stream.classList.remove("typing");
-      landed = indexAt(); burst(THANKS); startFacts(); round++; btn.hidden = false;
+      stream.classList.remove("typing"); spinning = false;
     }
     requestAnimationFrame(frame);
   }
-
-  function burst(msg) {
-    var b = document.createElement("div"); b.className = "burst"; b.setAttribute("aria-hidden", "true");
-    for (var i = 0; i < 10; i++) {
-      var sp = document.createElement("span"); sp.textContent = i % 3 ? "✨" : "★";
-      var a = (i / 10) * 2 * Math.PI + Math.random() * 0.3, d = 80 + Math.random() * 60;
-      sp.style.setProperty("--dx", (Math.cos(a) * d).toFixed(0) + "px");
-      sp.style.setProperty("--dy", (Math.sin(a) * d).toFixed(0) + "px");
-      sp.style.animationDelay = (Math.random() * 0.15).toFixed(2) + "s";
-      if (!(i % 3)) sp.style.color = ["#F5B82E", "#FF5A1F", "#14A39A", "#7A55E0"][i % 4];
-      b.appendChild(sp);
-    }
-    var t = document.createElement("strong"); t.className = "burst-thanks"; t.textContent = msg || "Thank you!"; b.appendChild(t);
-    box.appendChild(b);
-    setTimeout(function () { b.remove(); }, 4800);
-  }
-  function renderFact() {
-    var f = FACTS[factIdx % FACTS.length];
-    card.innerHTML = "";
-    var tg = document.createElement("div"); tg.className = "tagline eyebrow";
-    tg.className = "tagline agent"; tg.innerHTML = '<i class="pulse"></i>' + f.l;
-    var h = document.createElement("h3"); h.textContent = f.k;
-    var p = document.createElement("p"); p.className = "fact-text";
-    card.appendChild(tg); card.appendChild(h); card.appendChild(p);
-    // the agent writes the answer out word by word
-    if (measuring) { p.textContent = f.t; return; }
-    var words = f.t.split(" "), i = 0; clearTimeout(typeT);
-    (function next() { if (i >= words.length) { tg.querySelector(".pulse").classList.add("done"); return; } p.textContent += (i ? " " : "") + words[i++]; typeT = setTimeout(next, 120); })();
-  }
-  // each spin reveals the next surprise, in a shuffled order with no repeats until all are seen
-  // research findings come first, then the rest of the story
-  function shuffled(a) { return a.sort(function () { return Math.random() - 0.5; }); }
-  var RES = ["Surprising finding", "Key insight", "Impactful result", "A collaboration"];
-  var order = shuffled(FACTS.map(function (_, i) { return i; }).filter(function (i) { return RES.indexOf(FACTS[i].l) >= 0; }))
-    .concat(shuffled(FACTS.map(function (_, i) { return i; }).filter(function (i) { return RES.indexOf(FACTS[i].l) < 0; }))), pos = -1;
-  function startFacts() {
-    pos = (pos + 1) % order.length; factIdx = order[pos]; renderFact();
-    btn.textContent = "Spin again to know more about my work";
-  }
-  function intro() {
-    card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>Chinni</div><h3>Hi, I’m Chinni. Let me show you something from Soumya’s work.</h3>';
-  }
-
-  // Size the surprise box to its longest surprise, so the box never grows or shrinks between spins.
-  function sizeCard() {
-    card.style.minHeight = ""; var keep = card.innerHTML, max = 0, saved = factIdx;
-    measuring = true; for (var i = 0; i < FACTS.length; i++) { factIdx = i; renderFact(); max = Math.max(max, card.offsetHeight); }
-    measuring = false; factIdx = saved; card.innerHTML = keep; card.style.minHeight = max + "px";
-  }
-  // Reserve room for the longest thank-you line too, so nothing below the wheel moves while it streams.
+  // Reserve room for the longest thank-you, so nothing below the wheel moves while it streams.
   function sizeStream() {
-    stream.style.minHeight = ""; var max = 0, saved = TOKENS;
+    if (spinning) return;
+    var keep = stream.innerHTML, max = 0, saved = TOKENS; stream.style.minHeight = "";
     ROUNDS.forEach(function (r) { TOKENS = r.tokens; fullStream(); max = Math.max(max, stream.offsetHeight); });
-    TOKENS = saved; stream.innerHTML = ""; stream.style.minHeight = max + "px";
+    TOKENS = saved; stream.innerHTML = keep; stream.style.minHeight = max + "px";
   }
-  function sizeAll() { var k = card.innerHTML, keepS = stream.innerHTML; sizeCard(); if (!spinning) { sizeStream(); stream.innerHTML = keepS; } card.innerHTML = k; }
-  apply(); sizeCard(); sizeStream(); intro(); stream.innerHTML = "";
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeAll);
-  window.addEventListener("resize", sizeAll);
-  btn.addEventListener("click", spin);
+  apply(); sizeStream();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeStream);
+  window.addEventListener("resize", sizeStream);
   el.addEventListener("click", spin);
-  btn.hidden = true;
-  setTimeout(spin, 1200); // the first spin plays by itself when the page opens
-})();
+  setTimeout(spin, 900); // spins once by itself when the page opens; click the wheel to spin again
 
+  /* ---------- Chinni: a small guide in the corner, separate from the page ---------- */
+  var RES = ["Surprising finding", "Key insight", "Impactful result", "A collaboration"];
+  function shuffled(a) { return a.sort(function () { return Math.random() - 0.5; }); }
+  var idx = FACTS.map(function (_, i) { return i; });
+  var order = shuffled(idx.filter(function (i) { return RES.indexOf(FACTS[i].l) >= 0; }))
+    .concat(shuffled(idx.filter(function (i) { return RES.indexOf(FACTS[i].l) < 0; }))), pos = -1, typeT = null;
+
+  var root = document.createElement("div"); root.className = "chinni";
+  root.innerHTML =
+    '<div class="ch-bubble" hidden><button class="ch-x" type="button" aria-label="Dismiss">×</button>' +
+      '<p><b>Hi, I’m Chinni.</b> Want to see something from Soumya’s work?</p><button class="ch-yes" type="button">Show me</button></div>' +
+    '<div class="ch-panel" role="dialog" aria-label="Chinni" hidden>' +
+      '<div class="ch-head"><span class="ch-av" aria-hidden="true">✦</span><div><b>Chinni</b><small>A guide to Soumya’s work</small></div>' +
+      '<button class="ch-close" type="button" aria-label="Close">×</button></div>' +
+      '<div class="ch-body" aria-live="polite"></div>' +
+      '<div class="ch-foot"><button class="ch-next" type="button">Show me another</button></div></div>' +
+    '<button class="ch-fab" type="button" aria-label="Open Chinni"><span class="ch-av" aria-hidden="true">✦</span><span class="ch-name">Chinni</span></button>';
+  document.body.appendChild(root);
+  var bubble = root.querySelector(".ch-bubble"), panel = root.querySelector(".ch-panel"), body = root.querySelector(".ch-body"), fab = root.querySelector(".ch-fab");
+
+  function store(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } }
+  function showFact() {
+    pos = (pos + 1) % order.length; var f = FACTS[order[pos]];
+    body.innerHTML = '<p class="ch-label"></p><h3></h3><p class="ch-text"></p>';
+    body.querySelector(".ch-label").textContent = f.l; body.querySelector("h3").textContent = f.k;
+    var p = body.querySelector(".ch-text"), words = f.t.split(" "), i = 0; clearTimeout(typeT);
+    (function next() { if (i >= words.length) return; p.textContent += (i ? " " : "") + words[i++]; typeT = setTimeout(next, 90); })();
+  }
+  function open() { bubble.hidden = true; panel.hidden = false; root.classList.add("open"); store("chinni-seen", "1"); if (pos < 0) { body.innerHTML = '<p class="ch-hi">Hi, I’m Chinni. Here is something from Soumya’s work.</p>'; setTimeout(showFact, 700); } }
+  function close() { panel.hidden = true; root.classList.remove("open"); clearTimeout(typeT); }
+  fab.addEventListener("click", function () { panel.hidden ? open() : close(); });
+  root.querySelector(".ch-yes").addEventListener("click", open);
+  bubble.querySelector("p").addEventListener("click", open);
+  root.querySelector(".ch-x").addEventListener("click", function () { bubble.hidden = true; store("chinni-seen", "1"); });
+  root.querySelector(".ch-close").addEventListener("click", close);
+  root.querySelector(".ch-next").addEventListener("click", showFact);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) close(); });
+  // the bubble says hello once the wheel has stopped, and only once per visit
+  if (!store("chinni-seen")) setTimeout(function () { if (panel.hidden) bubble.hidden = false; }, 9500);
+})();
