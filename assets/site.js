@@ -132,7 +132,7 @@
     var D = 7000, t0 = performance.now(), from = theta, turns = 360 * (2.2 + Math.random() * 0.8), n = 0;
     var gap = (D * 0.8) / TOKENS.length; // the words arrive one by one at a steady pace
     stream.innerHTML = ""; stream.classList.add("typing");
-    if (round > 0) { clearTimeout(typeT); card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>chinni › looking through Soumya’s work…</div>'; }
+    if (round > 0) { clearTimeout(typeT); card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>Chinni is looking through Soumya’s work…</div>'; }
     stage(0);
     function frame(now) {
       var t = Math.min(1, (now - t0) / D);
@@ -166,7 +166,7 @@
     var f = FACTS[factIdx % FACTS.length];
     card.innerHTML = "";
     var tg = document.createElement("div"); tg.className = "tagline eyebrow";
-    tg.className = "tagline agent"; tg.innerHTML = '<i class="pulse"></i>chinni › ' + f.l;
+    tg.className = "tagline agent"; tg.innerHTML = '<i class="pulse"></i>' + f.l;
     var h = document.createElement("h3"); h.textContent = f.k;
     var p = document.createElement("p"); p.className = "fact-text";
     card.appendChild(tg); card.appendChild(h); card.appendChild(p);
@@ -186,7 +186,7 @@
     btn.textContent = "Spin again to know more about my work";
   }
   function intro() {
-    card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>chinni › hello</div><h3>Hi, I’m Chinni. Let me show you something from Soumya’s work.</h3>';
+    card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>Chinni</div><h3>Hi, I’m Chinni. Let me show you something from Soumya’s work.</h3>';
   }
 
   // Size the surprise box to its longest surprise, so the box never grows or shrinks between spins.
