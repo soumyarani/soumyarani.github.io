@@ -30,15 +30,15 @@
   var round = 0, TOKENS = ROUNDS[0].tokens, FINAL = "✨", THANKS = ROUNDS[0].pop;
   // Facts about my work, each with its own label, all from the November 2026 resume. They play in a loop after the wheel stops.
   var FACTS = [
-    { l: "Where I started", k: "From Civil Engineering to RL Research", t: "Before computer science, I was an Assistant Executive Engineer in the Roads and Buildings Department of the Government of Telangana." },
-    { l: "A milestone", k: "Rank 136", t: "I ranked 136 out of 107,893 in GATE Computer Science and Engineering 2018." },
-    { l: "Impactful result", k: "Real robots", t: "My M.Tech method doubled sample efficiency on a real robot arm and quadruped (ICRA\u00a02022)." },
-    { l: "Engineering result", k: "Microseconds", t: "I wrote a quadruped controller in lightweight C++ that runs in microseconds, down from the milliseconds in the source paper." },
-    { l: "Industry impact", k: "A patent", t: "I am a co-inventor on a US patent application for scheduling manufacturing jobs." },
-    { l: "Industry research", k: "Energy markets", t: "At Microsoft Research India I built the RL framework for a renewable-energy market, with carbon arbitrage and profit maximization." },
-    { l: "A collaboration", k: "Rollouts", t: "I worked with Prof.\u00a0Dimitri\u00a0Bertsekas on rollouts at every decoding step of an LLM, tested on Game\u00a0of\u00a024." },
-    { l: "Key insight", k: "The hinge", t: "With binary rewards, the clipped GRPO update is a weighted hinge loss. That is the idea behind GRPO-Unhinged." },
-    { l: "Surprising finding", k: "Right answer, wrong reasons", t: "After RLVR, correct answers reached through incoherent reasoning go up in every setting we tested." }
+    { l: "Where she started", k: "From Civil Engineering to RL Research", t: "Before computer science, Soumya was an Assistant Executive Engineer in the Roads and Buildings Department of the Government of Telangana." },
+    { l: "A milestone", k: "Rank 136", t: "Soumya ranked 136 out of 107,893 in GATE Computer Science and Engineering 2018." },
+    { l: "Impactful result", k: "Real robots", t: "Her M.Tech method doubled sample efficiency on a real robot arm and quadruped (ICRA\u00a02022)." },
+    { l: "Engineering result", k: "Microseconds", t: "She wrote a quadruped controller in lightweight C++ that runs in microseconds, down from the milliseconds in the source paper." },
+    { l: "Industry impact", k: "A patent", t: "She is a co-inventor on a US patent application for scheduling manufacturing jobs." },
+    { l: "Industry research", k: "Energy markets", t: "At Microsoft Research India she built the RL framework for a renewable-energy market, with carbon arbitrage and profit maximization." },
+    { l: "A collaboration", k: "Rollouts", t: "She worked with Prof.\u00a0Dimitri\u00a0Bertsekas on rollouts at every decoding step of an LLM, tested on Game\u00a0of\u00a024." },
+    { l: "Key insight", k: "The hinge", t: "With binary rewards, the clipped GRPO update is a weighted hinge loss. That is the idea behind her ongoing work, GRPO-Unhinged." },
+    { l: "Surprising finding", k: "Right answer, wrong reasons", t: "After RLVR, correct answers reached through incoherent reasoning go up in every setting she tested." }
   ];
   var typeT = null, measuring = false;
   var factTimer = null, factIdx = 0, landed = null;
@@ -132,7 +132,7 @@
     var D = 7000, t0 = performance.now(), from = theta, turns = 360 * (2.2 + Math.random() * 0.8), n = 0;
     var gap = (D * 0.8) / TOKENS.length; // the words arrive one by one at a steady pace
     stream.innerHTML = ""; stream.classList.add("typing");
-    if (round > 0) { clearTimeout(typeT); card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>agent › looking through my work…</div>'; }
+    if (round > 0) { clearTimeout(typeT); card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>chinni › looking through Soumya’s work…</div>'; }
     stage(0);
     function frame(now) {
       var t = Math.min(1, (now - t0) / D);
@@ -166,7 +166,7 @@
     var f = FACTS[factIdx % FACTS.length];
     card.innerHTML = "";
     var tg = document.createElement("div"); tg.className = "tagline eyebrow";
-    tg.className = "tagline agent"; tg.innerHTML = '<i class="pulse"></i>agent › ' + f.l;
+    tg.className = "tagline agent"; tg.innerHTML = '<i class="pulse"></i>chinni › ' + f.l;
     var h = document.createElement("h3"); h.textContent = f.k;
     var p = document.createElement("p"); p.className = "fact-text";
     card.appendChild(tg); card.appendChild(h); card.appendChild(p);
@@ -186,7 +186,7 @@
     btn.textContent = "Spin again to know more about my work";
   }
   function intro() {
-    card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>agent › hello</div><h3>Picking something from my work for you…</h3>';
+    card.innerHTML = '<div class="tagline agent"><i class="pulse"></i>chinni › hello</div><h3>Hi, I’m Chinni. Let me show you something from Soumya’s work.</h3>';
   }
 
   // Size the surprise box to its longest surprise, so the box never grows or shrinks between spins.
