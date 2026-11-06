@@ -179,11 +179,15 @@
     (function next() { if (i >= words.length) return; p.textContent += (i ? " " : "") + words[i++]; typeT = setTimeout(next, 90); })();
   }
   function open() { panel.hidden = false; root.classList.add("open"); if (pos < 0) showFact(); }
-  function close() { store("chinni-closed", "1"); panel.hidden = true; root.classList.remove("open"); clearTimeout(typeT); }
+  function close() { opened = true; panel.hidden = true; root.classList.remove("open"); clearTimeout(typeT); }
   fab.addEventListener("click", function () { panel.hidden ? open() : close(); });
   root.querySelector(".ch-close").addEventListener("click", close);
   root.querySelector(".ch-next").addEventListener("click", showFact);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !panel.hidden) close(); });
   // Chinni opens by herself with a finding once the wheel has stopped, unless she was closed earlier in this visit
-  if (!store("chinni-closed")) onStop = open;
+  // she pops up on every visit to the home page, right after the wheel stops; the timer is a fallback
+  // in case the spin is paused, e.g. while the tab was in the background
+  var opened = false;
+  function autoOpen() { if (opened) return; opened = true; open(); }
+  onStop = autoOpen; setTimeout(autoOpen, 9500);
 })();
